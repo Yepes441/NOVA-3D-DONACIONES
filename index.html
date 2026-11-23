@@ -3,38 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NOVA • 3D Printing Studio | Juguetes con Propósito</title>
+    <title>NOVA • 3D Printing Studio | Juguetes con Propósito — Trazabilidad 100% Abierta</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: { sans: ['Inter', 'sans-serif'], mono: ['JetBrains Mono', 'monospace'] },
-                    colors: { nova: { navy: '#1E4E6E', navyDark: '#14374F', navyLight: '#2A6891', cyan: '#50C8D0', cyanDark: '#36B0B9', cyanLight: '#E6F8F9' } }
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        nova: {
+                            navy: '#1E4E6E',
+                            navyDark: '#14374F',
+                            navyLight: '#2A6891',
+                            cyan: '#50C8D0',
+                            cyanDark: '#36B0B9',
+                            cyanLight: '#E6F8F9',
+                        }
+                    }
                 }
             }
         }
     </script>
     <style>
-        .build-plate-bg { background-color: #f4f8fa; background-image: linear-gradient(to right, rgba(30, 78, 110, 0.07) 1px, transparent 1px), linear-gradient(to bottom, rgba(30, 78, 110, 0.07) 1px, transparent 1px); background-size: 28px 28px; }
-        .glass-card { background: rgba(255, 255, 255, 0.94); backdrop-filter: blur(12px); }
-        @keyframes pulseGlowNova { 0%, 100% { box-shadow: 0 0 0 0 rgba(80, 200, 208, 0.45); } 50% { box-shadow: 0 0 0 10px rgba(80, 200, 208, 0); } }
-        .pulse-cta { animation: pulseGlowNova 2.5s infinite; }
-        @keyframes spinSlow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        .animate-spin-fast { animation: spinSlow 0.8s linear infinite; }
+        .build-plate-bg {
+            background-color: #f4f8fa;
+            background-image: 
+                linear-gradient(to right, rgba(30, 78, 110, 0.07) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(30, 78, 110, 0.07) 1px, transparent 1px);
+            background-size: 28px 28px;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.94);
+            backdrop-filter: blur(12px);
+        }
+        @keyframes pulseGlowNova {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(80, 200, 208, 0.45); }
+            50% { box-shadow: 0 0 0 10px rgba(80, 200, 208, 0); }
+        }
+        .pulse-cta {
+            animation: pulseGlowNova 2.5s infinite;
+        }
+        @keyframes spinSlow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .animate-spin-fast {
+            animation: spinSlow 0.8s linear infinite;
+        }
     </style>
 </head>
 <body class="build-plate-bg text-slate-800 font-sans antialiased selection:bg-nova-cyan selection:text-nova-navyDark">
 
     <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
 
-    <!-- Header -->
+    <!-- ===================================================================== -->
+    <!-- HEADER -->
+    <!-- ===================================================================== -->
     <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200/90 shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-3">
-            <a href="#" class="flex items-center gap-3 group shrink-0">
-                <svg class="h-12 sm:h-14 w-auto" viewBox="0 0 360 135" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <a href="#" class="flex items-center gap-3 group shrink-0" aria-label="NOVA 3D Printing Studio">
+                <svg class="h-12 sm:h-14 w-auto transition-transform duration-300 group-hover:scale-[1.02]" viewBox="0 0 360 135" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M22 92V38H34.5L63.5 74.5V38H75.5V92H63.5L34 54.8V92H22Z" fill="#1E4E6E"/>
                     <path d="M104 74C96.5 64.5 96.5 48.5 104.5 38.5C112.5 28.5 125 23.5 138 23.5" stroke="#1E4E6E" stroke-width="4" stroke-linecap="round"/>
                     <path d="M112 69C106.5 61 106.5 48.5 113 40.5C119.5 32.5 129.5 29 139.5 29" stroke="#50C8D0" stroke-width="3.5" stroke-linecap="round"/>
@@ -57,18 +95,18 @@
 
             <nav class="hidden lg:flex items-center gap-6 text-sm font-semibold text-nova-navy">
                 <a href="#rastreador" class="hover:text-nova-cyanDark transition-colors">Rastrear Aporte</a>
-                <a href="#transparencia" class="hover:text-nova-cyanDark transition-colors">Libro Abierto</a>
+                <a href="#transparencia" class="hover:text-nova-cyanDark transition-colors">Libro Abierto & Bobinas</a>
                 <a href="#como-funciona" class="hover:text-nova-cyanDark transition-colors">¿Cómo calculamos?</a>
             </nav>
 
             <div class="flex items-center gap-2 sm:gap-3">
                 <button onclick="syncFromGoogleSheets(true)" id="sync-status-btn" class="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-100 hover:bg-nova-cyanLight border border-slate-200 text-xs font-semibold text-nova-navy transition cursor-pointer">
                     <span id="sync-dot" class="w-2 h-2 rounded-full bg-emerald-500"></span>
-                    <span id="sync-label" class="hidden sm:inline">En vivo</span>
+                    <span id="sync-label" class="hidden sm:inline">En vivo • Google Sheets</span>
                     <i data-lucide="refresh-cw" id="sync-icon" class="w-3.5 h-3.5 text-nova-navy"></i>
                 </button>
 
-                <button onclick="openDonationModal()" class="pulse-cta inline-flex items-center gap-2 bg-nova-navy hover:bg-nova-navyDark text-white font-bold text-sm px-4 sm:px-5 py-2.5 rounded-xl shadow-lg transition-all cursor-pointer border border-nova-cyan/30">
+                <button onclick="openDonationModal()" class="pulse-cta inline-flex items-center gap-2 bg-nova-navy hover:bg-nova-navyDark active:scale-[0.98] text-white font-bold text-sm px-4 sm:px-5 py-2.5 rounded-xl shadow-lg shadow-nova-navy/25 transition-all cursor-pointer border border-nova-cyan/30">
                     <i data-lucide="heart-handshake" class="w-4 h-4 text-nova-cyan"></i>
                     <span>Quiero Donar</span>
                 </button>
@@ -76,149 +114,254 @@
         </div>
     </header>
 
-    <!-- Hero & KPIs -->
-    <section class="relative pt-10 pb-12 sm:pt-14 sm:pb-16">
+    <!-- ===================================================================== -->
+    <!-- HERO & KPIs -->
+    <!-- ===================================================================== -->
+    <section class="relative pt-10 pb-12 sm:pt-14 sm:pb-16 overflow-hidden">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center max-w-3xl mx-auto">
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-nova-cyan/50 shadow-sm text-xs font-bold text-nova-navy mb-6">
+                    <span class="w-2 h-2 rounded-full bg-nova-cyan animate-ping"></span>
+                    <span>Campaña Juguetes con Propósito • Auditoría Gramo a Gramo</span>
+                </div>
                 <h1 class="text-3xl sm:text-5xl font-extrabold text-nova-navyDark tracking-tight leading-[1.15] mb-5">
                     Convertimos cada gramo de PLA en la <span class="text-transparent bg-clip-text bg-gradient-to-r from-nova-navy via-nova-navyLight to-nova-cyanDark">sonrisa de un niño</span>
                 </h1>
                 <p class="text-base sm:text-lg text-slate-600 leading-relaxed mb-8">
-                    Dona con tu nombre o de forma anónima con un <span class="font-mono font-bold text-nova-navy bg-nova-cyanLight border border-nova-cyan/40 px-2 py-0.5 rounded-md">ID único</span>. Conectado en tiempo real a nuestra hoja de taller.
+                    Dona con tu nombre o de forma anónima con un <span class="font-mono font-bold text-nova-navy bg-nova-cyanLight border border-nova-cyan/40 px-2 py-0.5 rounded-md">ID único</span>. Conectado en tiempo real a nuestra hoja de taller para que audites qué rollo de filamento compramos y qué juguetes imprimimos con tu aporte.
                 </p>
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
+                    <button onclick="openDonationModal()" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-nova-navy hover:bg-nova-navyDark text-white font-bold px-7 py-3.5 rounded-xl shadow-xl shadow-nova-navy/20 transition-all cursor-pointer">
+                        <i data-lucide="sparkles" class="w-5 h-5 text-nova-cyan"></i>
+                        Quiero Donar Filamento
+                    </button>
+                    <a href="#rastreador" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white hover:bg-nova-cyanLight/50 text-nova-navy border border-nova-navy/25 font-bold px-6 py-3.5 rounded-xl transition-all">
+                        <i data-lucide="search" class="w-4 h-4 text-nova-cyanDark"></i>
+                        Rastrear mi ID o Nombre
+                    </a>
+                </div>
             </div>
 
             <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5 mt-12">
-                <div class="glass-card border border-slate-200/90 rounded-2xl p-5 shadow-sm">
-                    <span class="text-xs font-bold uppercase text-slate-500">Total Recaudado</span>
+                <!-- KPI 1 -->
+                <div class="glass-card border border-slate-200/90 rounded-2xl p-5 shadow-sm hover:border-nova-cyan transition">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Total Recaudado</span>
+                        <div class="w-9 h-9 rounded-xl bg-nova-cyanLight text-nova-navy flex items-center justify-center"><i data-lucide="wallet" class="w-4 h-4"></i></div>
+                    </div>
                     <p id="stat-total-cop" class="text-xl sm:text-2xl font-extrabold text-nova-navyDark font-mono">$0</p>
                 </div>
-                <div class="glass-card border border-slate-200/90 rounded-2xl p-5 shadow-sm">
-                    <span class="text-xs font-bold uppercase text-slate-500">PLA Comprado</span>
+                <!-- KPI 2 -->
+                <div class="glass-card border border-slate-200/90 rounded-2xl p-5 shadow-sm hover:border-nova-cyan transition">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-xs font-bold uppercase tracking-wider text-slate-500">PLA Comprado</span>
+                        <div class="w-9 h-9 rounded-xl bg-nova-navy/10 text-nova-navy flex items-center justify-center"><i data-lucide="disc" class="w-4 h-4"></i></div>
+                    </div>
                     <p id="stat-total-pla" class="text-xl sm:text-2xl font-extrabold text-nova-navyDark font-mono">0 g</p>
-                    <p id="stat-spools-count" class="text-xs text-slate-500 font-medium mt-1">...</p>
+                    <p id="stat-spools-count" class="text-xs text-slate-500 font-medium mt-1">Cargando...</p>
                 </div>
-                <div class="glass-card border border-slate-200/90 rounded-2xl p-5 shadow-sm">
+                <!-- KPI 3 -->
+                <div class="glass-card border border-slate-200/90 rounded-2xl p-5 shadow-sm hover:border-nova-cyan transition">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-xs font-bold uppercase tracking-wider text-slate-500">PLA en Juguetes</span>
+                        <div class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center"><i data-lucide="layers" class="w-4 h-4"></i></div>
+                    </div>
                     <div class="flex items-baseline justify-between">
                         <p id="stat-used-grams" class="text-xl sm:text-2xl font-extrabold text-nova-navyDark font-mono">0 g</p>
                         <span id="stat-execution-pct" class="text-xs font-mono font-bold text-emerald-600">0%</span>
                     </div>
                     <div class="w-full h-2 bg-slate-100 rounded-full overflow-hidden mt-2">
-                        <div id="stat-execution-bar" class="h-full bg-gradient-to-r from-nova-navy to-nova-cyan rounded-full" style="width: 0%"></div>
+                        <div id="stat-execution-bar" class="h-full bg-gradient-to-r from-nova-navy to-nova-cyan rounded-full transition-all duration-500" style="width: 0%"></div>
                     </div>
                 </div>
-                <div class="glass-card border border-slate-200/90 rounded-2xl p-5 shadow-sm">
-                    <span class="text-xs font-bold uppercase text-slate-500">Juguetes Creados</span>
+                <!-- KPI 4 -->
+                <div class="glass-card border border-slate-200/90 rounded-2xl p-5 shadow-sm hover:border-nova-cyan transition">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Juguetes Creados</span>
+                        <div class="w-9 h-9 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center"><i data-lucide="gift" class="w-4 h-4"></i></div>
+                    </div>
                     <p id="stat-total-toys" class="text-xl sm:text-2xl font-extrabold text-nova-navyDark font-mono">0</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Buscador y Libro Abierto (Se mantiene igual) -->
+    <!-- ===================================================================== -->
+    <!-- RASTREADOR -->
+    <!-- ===================================================================== -->
     <section id="rastreador" class="py-8 sm:py-12">
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="bg-white rounded-3xl border border-slate-200 shadow-xl overflow-hidden">
+            <div class="bg-white rounded-3xl border border-slate-200 shadow-xl shadow-nova-navy/10 overflow-hidden">
                 <div class="bg-gradient-to-r from-nova-navyDark via-nova-navy to-nova-navyLight text-white p-6 sm:p-8">
                     <h2 class="text-2xl sm:text-3xl font-extrabold mb-4">Rastrea tu Aporte</h2>
                     <div class="flex flex-col sm:flex-row gap-2.5">
-                        <input type="text" id="search-input" placeholder="Escribe tu ID (ej. N3D-4821) o tu nombre..." class="w-full pl-12 pr-4 py-3.5 rounded-xl bg-nova-navyDark/80 border border-nova-cyan/40 text-white placeholder-slate-300 focus:ring-2 focus:ring-nova-cyan" onkeyup="handleSearchInput(event)">
-                        <button onclick="executeSearch()" class="bg-nova-cyan hover:bg-nova-cyanDark text-nova-navyDark font-extrabold px-6 py-3.5 rounded-xl transition-colors">Consultar</button>
+                        <div class="relative flex-1">
+                            <i data-lucide="search" class="w-5 h-5 text-slate-300 absolute left-4 top-1/2 -translate-y-1/2"></i>
+                            <input type="text" id="search-input" placeholder="Escribe tu ID o nombre..." class="w-full pl-12 pr-4 py-3.5 rounded-xl bg-nova-navyDark/80 border border-nova-cyan/40 text-white placeholder-slate-300 focus:outline-none focus:ring-2 focus:ring-nova-cyan" onkeyup="handleSearchInput(event)">
+                        </div>
+                        <button onclick="executeSearch()" class="bg-nova-cyan hover:bg-nova-cyanDark text-nova-navyDark font-extrabold px-6 py-3.5 rounded-xl transition-colors cursor-pointer">Consultar</button>
                     </div>
                     <div id="quick-chips-container" class="mt-4 flex flex-wrap items-center gap-2 text-xs"></div>
                 </div>
-                <div id="traceability-result" class="p-6 sm:p-8 min-h-[200px]">
+                <div id="traceability-result" class="p-6 sm:p-8">
                     <div class="text-center py-10 text-slate-500">
                         <i data-lucide="loader-2" class="w-8 h-8 animate-spin mx-auto text-nova-navy mb-2"></i>
-                        <p>Sincronizando...</p>
+                        <p class="text-sm font-medium">Sincronizando registros...</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- ===================================================================== -->
+    <!-- LIBRO ABIERTO (TABS) -->
+    <!-- ===================================================================== -->
     <section id="transparencia" class="py-10 sm:py-14">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-2xl sm:text-3xl font-extrabold text-nova-navyDark mb-8">Libro Abierto de Transparencia</h2>
-            <div id="ledger-donations" class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden mb-6">
-                <table class="w-full text-left border-collapse">
-                    <thead>
-                        <tr class="bg-nova-navy/5 border-b border-slate-200 text-xs font-bold uppercase text-nova-navy">
-                            <th class="py-4 px-5">ID</th>
-                            <th class="py-4 px-5">Donante</th>
-                            <th class="py-4 px-5">Monto</th>
-                            <th class="py-4 px-5">Lote</th>
-                            <th class="py-4 px-5">Estado</th>
-                            <th class="py-4 px-5 text-right">Detalle</th>
-                        </tr>
-                    </thead>
-                    <tbody id="donations-table-body" class="divide-y divide-slate-100 text-sm"></tbody>
-                </table>
+            <div class="flex flex-col lg:flex-row lg:items-end justify-between mb-8 gap-4">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-wider text-nova-cyanDark">Datos Sincronizados en Vivo</span>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-nova-navyDark mt-0.5">Libro Abierto de Transparencia</h2>
+                </div>
+                <div class="inline-flex flex-wrap bg-slate-200/80 p-1.5 rounded-xl self-start gap-1">
+                    <button id="tab-btn-donations" onclick="switchLedgerTab('donations')" class="px-4 py-2 rounded-lg text-xs sm:text-sm font-bold bg-nova-navy text-white shadow-sm transition cursor-pointer">Donaciones</button>
+                    <button id="tab-btn-spools" onclick="switchLedgerTab('spools')" class="px-4 py-2 rounded-lg text-xs sm:text-sm font-bold text-slate-700 hover:text-nova-navy transition cursor-pointer">Bobinas PLA</button>
+                    <button id="tab-btn-toys" onclick="switchLedgerTab('toys')" class="px-4 py-2 rounded-lg text-xs sm:text-sm font-bold text-slate-700 hover:text-nova-navy transition cursor-pointer">Galería de Juguetes</button>
+                </div>
             </div>
+
+            <div id="ledger-donations" class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-nova-navy/5 border-b border-slate-200 text-xs font-bold uppercase tracking-wider text-nova-navy">
+                                <th class="py-4 px-5">ID Seguimiento</th>
+                                <th class="py-4 px-5">Donante</th>
+                                <th class="py-4 px-5">Monto Donado</th>
+                                <th class="py-4 px-5">Lote PLA</th>
+                                <th class="py-4 px-5">Ejecución Gramos</th>
+                                <th class="py-4 px-5">Estado</th>
+                                <th class="py-4 px-5 text-right">Detalle</th>
+                            </tr>
+                        </thead>
+                        <tbody id="donations-table-body" class="divide-y divide-slate-100 text-sm"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="ledger-spools" class="hidden grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+            <div id="ledger-toys" class="hidden grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5"></div>
         </div>
     </section>
 
-    <!-- Modal de Donación -->
+    <!-- ===================================================================== -->
+    <!-- MODAL DE DONACIÓN -->
+    <!-- ===================================================================== -->
     <div id="donation-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-slate-900/75 backdrop-blur-sm">
         <div class="bg-white rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl border border-slate-200 max-h-[92vh] overflow-y-auto">
             <div class="bg-nova-navyDark text-white px-6 py-5 flex items-center justify-between">
-                <h3 class="font-bold text-lg">Quiero Donar Filamento PLA</h3>
-                <button onclick="closeDonationModal()" class="text-slate-300 hover:text-white p-1.5"><i data-lucide="x" class="w-5 h-5"></i></button>
+                <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-xl bg-nova-navy border border-nova-cyan/40 flex items-center justify-center"><i data-lucide="heart-handshake" class="w-5 h-5 text-nova-cyan"></i></div>
+                    <div>
+                        <h3 class="font-bold text-lg leading-tight">Quiero Donar Filamento PLA</h3>
+                        <p class="text-xs text-nova-cyan">Obtén tu código de trazabilidad al instante</p>
+                    </div>
+                </div>
+                <button onclick="closeDonationModal()" class="text-slate-300 hover:text-white p-1.5 rounded-lg hover:bg-nova-navy transition cursor-pointer"><i data-lucide="x" class="w-5 h-5"></i></button>
             </div>
 
             <div id="donation-step-form" class="p-6 space-y-5">
                 <div>
-                    <label class="block text-xs font-bold uppercase text-slate-500 mb-2">1. Monto a donar (COP)</label>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">1. Elige o escribe el monto a donar (COP)</label>
                     <div class="grid grid-cols-4 gap-2 mb-3">
-                        <button type="button" onclick="setDonationAmount(20000, this)" class="amount-preset py-2 rounded-xl border text-xs font-bold text-slate-700">$20.000</button>
-                        <button type="button" onclick="setDonationAmount(35000, this)" class="amount-preset py-2 rounded-xl border-2 border-nova-navy bg-nova-cyanLight text-xs font-bold text-nova-navyDark">$35.000</button>
-                        <button type="button" onclick="setDonationAmount(50000, this)" class="amount-preset py-2 rounded-xl border text-xs font-bold text-slate-700">$50.000</button>
-                        <button type="button" onclick="setDonationAmount(85000, this)" class="amount-preset py-2 rounded-xl border text-xs font-bold text-slate-700">1 Rollo</button>
+                        <button type="button" onclick="setDonationAmount(20000, this)" class="amount-preset py-2 px-2 rounded-xl border border-slate-200 text-xs sm:text-sm font-bold text-slate-700 hover:border-nova-navy transition cursor-pointer">$20.000</button>
+                        <button type="button" onclick="setDonationAmount(35000, this)" class="amount-preset py-2 px-2 rounded-xl border-2 border-nova-navy bg-nova-cyanLight/60 text-xs sm:text-sm font-bold text-nova-navyDark transition cursor-pointer">$35.000</button>
+                        <button type="button" onclick="setDonationAmount(50000, this)" class="amount-preset py-2 px-2 rounded-xl border border-slate-200 text-xs sm:text-sm font-bold text-slate-700 hover:border-nova-navy transition cursor-pointer">$50.000</button>
+                        <button type="button" onclick="setDonationAmount(85000, this)" class="amount-preset py-2 px-2 rounded-xl border border-slate-200 text-xs sm:text-sm font-bold text-slate-700 hover:border-nova-navy transition cursor-pointer">1 Rollo</button>
                     </div>
-                    <input type="number" id="donation-amount-input" value="35000" min="5000" oninput="updateLiveGramCalculation()" class="w-full pl-4 pr-4 py-3 rounded-xl border font-mono font-bold text-lg text-nova-navyDark focus:ring-2 focus:ring-nova-cyan">
-                    <div class="mt-2 flex justify-between bg-nova-cyanLight/70 rounded-xl px-3 py-2 text-xs">
-                        <span>Filamento PLA cubierto:</span>
-                        <span id="live-grams-preview" class="font-mono font-extrabold text-nova-navyDark">412 g</span>
+                    <div class="relative">
+                        <span class="absolute left-4 top-1/2 -translate-y-1/2 font-mono font-bold text-slate-400">$</span>
+                        <input type="number" id="donation-amount-input" value="35000" min="5000" step="1000" oninput="updateLiveGramCalculation()" class="w-full pl-9 pr-16 py-3 rounded-xl border border-slate-300 font-mono font-bold text-lg text-nova-navyDark focus:ring-2 focus:ring-nova-cyan focus:outline-none">
+                        <span class="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400">COP</span>
+                    </div>
+                    <div class="mt-2.5 flex items-center justify-between bg-nova-cyanLight/70 border border-nova-cyan/40 rounded-xl px-3.5 py-2.5 text-xs">
+                        <span class="text-nova-navyDark font-semibold flex items-center gap-1.5"><i data-lucide="scale" class="w-4 h-4 text-nova-navy"></i>Filamento PLA cubierto:</span>
+                        <span id="live-grams-preview" class="font-mono font-extrabold text-nova-navyDark text-sm">412 g</span>
                     </div>
                 </div>
 
-                <div class="border-t pt-4">
-                    <div class="flex justify-between mb-3">
-                        <label class="text-xs font-bold uppercase text-slate-500">2. Identificación</label>
-                        <label class="inline-flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" id="anonymous-toggle" onchange="toggleAnonymousMode()" class="w-4 h-4 rounded">
-                            <span class="text-xs font-bold text-nova-navyDark">Anónimo</span>
+                <div class="border-t border-slate-100 pt-4">
+                    <div class="flex items-center justify-between mb-3">
+                        <label class="text-xs font-bold uppercase tracking-wider text-slate-500">2. Identificación del Donante</label>
+                        <label class="inline-flex items-center gap-2 cursor-pointer select-none bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200">
+                            <input type="checkbox" id="anonymous-toggle" onchange="toggleAnonymousMode()" class="w-4 h-4 rounded text-nova-navy focus:ring-nova-cyan">
+                            <span class="text-xs font-bold text-nova-navyDark">Donar como Anónimo</span>
                         </label>
                     </div>
+
                     <div id="public-name-box">
-                        <input type="text" id="donor-name-input" placeholder="Tu nombre (Ej: Camila Torres)" class="w-full px-4 py-3 rounded-xl border text-sm">
+                        <input type="text" id="donor-name-input" placeholder="Tu nombre completo o apodo" class="w-full px-4 py-3 rounded-xl border border-slate-300 text-sm font-medium focus:ring-2 focus:ring-nova-cyan focus:outline-none">
                     </div>
+
                     <div id="anonymous-id-box" class="hidden bg-amber-50 border border-amber-200 rounded-xl p-4">
-                        <p class="text-xs font-bold text-amber-950">Modo Anónimo Activado</p>
-                        <p class="text-xs text-amber-900/90 mt-0.5">Tu ID es: <strong id="generated-anon-id" class="font-mono text-base bg-white px-2 py-1 rounded border">N3D-0000</strong></p>
+                        <div class="flex items-start gap-3">
+                            <div class="w-9 h-9 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center shrink-0 mt-0.5"><i data-lucide="shield-check" class="w-5 h-5"></i></div>
+                            <div class="flex-1">
+                                <p class="text-xs font-bold text-amber-950">Modo Anónimo Activado</p>
+                                <p class="text-xs text-amber-900/90 mt-0.5">Guarda tu ID para rastrear tu aporte:</p>
+                                <div class="mt-2.5 flex items-center gap-2">
+                                    <span id="generated-anon-id" class="font-mono font-extrabold text-base bg-white px-3 py-1.5 rounded-lg border border-amber-300 text-nova-navyDark tracking-wider">N3D-0000</span>
+                                    <button type="button" onclick="copyTextToClipboard(document.getElementById('generated-anon-id').innerText)" class="inline-flex items-center gap-1 text-xs font-bold bg-amber-200 hover:bg-amber-300 text-amber-950 px-3 py-1.5 rounded-lg transition cursor-pointer"><i data-lucide="copy" class="w-3.5 h-3.5"></i> Copiar</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <button type="button" onclick="proceedToPaymentSimulation()" class="w-full bg-nova-navy hover:bg-nova-navyDark text-white font-bold py-3.5 rounded-xl transition">Continuar y Registrar Código</button>
+                <button type="button" onclick="proceedToPaymentSimulation()" class="w-full bg-nova-navy hover:bg-nova-navyDark text-white font-bold py-3.5 rounded-xl shadow-lg shadow-nova-navy/20 transition flex items-center justify-center gap-2 cursor-pointer">
+                    <span>Continuar y Registrar Código</span>
+                    <i data-lucide="arrow-right" class="w-4 h-4 text-nova-cyan"></i>
+                </button>
             </div>
 
             <div id="donation-step-payment" class="hidden p-6 text-center space-y-4">
-                <h4 class="text-xl font-extrabold text-nova-navyDark" id="payment-summary-title">Donación de $35.000 COP</h4>
-                <p class="text-sm text-slate-600 max-w-sm mx-auto">
-                    Para validar tu aporte, envía la foto de tu transferencia al WhatsApp <strong>320 980 6075</strong> junto con tu código:
+                <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-nova-cyanLight text-nova-navyDark text-xs font-bold border border-nova-cyan/40">
+                    <i data-lucide="qr-code" class="w-3.5 h-3.5"></i> Transferencia Nequi / Bre-B / Bancolombia
+                </div>
+                <h4 class="text-xl font-extrabold text-nova-navyDark" id="payment-summary-title">Donación de $35.000</h4>
+                
+                <p class="text-sm text-slate-600 max-w-sm mx-auto leading-relaxed">
+                    Para validar tu aporte, <strong>envía la foto de tu transferencia al WhatsApp <a href="https://wa.me/573209806075" target="_blank" class="text-nova-navy font-bold underline">320 980 6075</a></strong> junto con tu código:
                 </p>
-                <p class="text-sm font-mono font-bold text-nova-navy bg-slate-100 py-1.5 rounded-lg border" id="payment-inline-id">N3D-XXXX</p>
+                <p class="text-sm font-mono font-bold text-nova-navy bg-slate-100 py-1.5 rounded-lg border border-slate-200" id="payment-inline-id">N3D-XXXX</p>
 
-                <!-- QR y ID -->
-                <div class="bg-slate-50 rounded-xl p-3 border text-xs flex items-center justify-between">
+                <div class="w-40 h-40 mx-auto bg-white p-3 rounded-2xl border-2 border-dashed border-nova-navy/40 flex items-center justify-center my-4">
+                    <svg viewBox="0 0 100 100" class="w-full h-full text-nova-navyDark" fill="currentColor">
+                        <rect x="10" y="10" width="25" height="25" rx="3" fill="none" stroke="currentColor" stroke-width="5"/>
+                        <rect x="17" y="17" width="11" height="11" fill="#50C8D0"/>
+                        <rect x="65" y="10" width="25" height="25" rx="3" fill="none" stroke="currentColor" stroke-width="5"/>
+                        <rect x="72" y="17" width="11" height="11"/>
+                        <rect x="10" y="65" width="25" height="25" rx="3" fill="none" stroke="currentColor" stroke-width="5"/>
+                        <rect x="17" y="72" width="11" height="11"/>
+                        <rect x="45" y="12" width="8" height="8"/><rect x="45" y="26" width="8" height="14"/>
+                        <rect x="12" y="45" width="14" height="8"/><rect x="32" y="45" width="22" height="8" fill="#50C8D0"/>
+                        <rect x="62" y="45" width="12" height="8"/><rect x="80" y="45" width="8" height="22"/>
+                        <rect x="45" y="62" width="8" height="14"/><rect x="60" y="68" width="14" height="8"/>
+                        <rect x="45" y="82" width="25" height="8"/><rect x="78" y="78" width="10" height="10" fill="#50C8D0"/>
+                    </svg>
+                </div>
+
+                <div class="bg-slate-50 rounded-xl p-3 border border-slate-200 text-xs flex items-center justify-between">
                     <span class="text-slate-500 font-medium">Tu ID:</span>
-                    <strong id="payment-tracking-code" class="font-mono text-sm text-nova-navyDark">N3D-XXXX</strong>
+                    <div class="flex items-center gap-2">
+                        <strong id="payment-tracking-code" class="font-mono text-sm text-nova-navyDark">N3D-XXXX</strong>
+                        <button type="button" onclick="copyTextToClipboard(document.getElementById('payment-tracking-code').innerText)" class="text-nova-cyanDark hover:underline font-bold cursor-pointer">Copiar</button>
+                    </div>
                 </div>
 
                 <div class="flex gap-3 pt-2">
-                    <button type="button" onclick="backToDonationForm()" class="w-1/3 py-3 rounded-xl border text-slate-700 font-semibold text-sm">Volver</button>
-                    <!-- ESTE ES EL NUEVO BOTÓN -->
-                    <button type="button" onclick="saveDonationToSheets()" id="btn-save-donation" class="w-2/3 py-3 rounded-xl bg-nova-navy hover:bg-nova-navyDark text-white font-bold text-sm shadow-lg flex items-center justify-center gap-2 cursor-pointer transition-all">
+                    <button type="button" onclick="backToDonationForm()" class="w-1/3 py-3 rounded-xl border border-slate-300 text-slate-700 font-semibold text-sm hover:bg-slate-50 cursor-pointer">Volver</button>
+                    <button type="button" onclick="saveDonationToSheets()" id="btn-save-donation" class="w-2/3 py-3 rounded-xl bg-nova-navy hover:bg-nova-navyDark text-white font-bold text-sm shadow-lg shadow-nova-navy/20 flex items-center justify-center gap-2 cursor-pointer transition-all">
                         <i data-lucide="check-circle-2" class="w-4 h-4 text-nova-cyan"></i>
                         Confirmar y Actualizar Excel
                     </button>
@@ -227,24 +370,88 @@
         </div>
     </div>
 
-    <!-- Scripts -->
+    <!-- ===================================================================== -->
+    <!-- MODALES DE BOBINA Y CERTIFICADO -->
+    <!-- ===================================================================== -->
+    <div id="invoice-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-slate-900/75 backdrop-blur-sm">
+        <div class="bg-white rounded-3xl max-w-md w-full overflow-hidden shadow-2xl border border-slate-200">
+            <div class="bg-nova-navyDark text-white px-6 py-4 flex items-center justify-between">
+                <span class="font-mono text-xs font-bold text-nova-cyan uppercase tracking-wider">Auditoría de Bobina PLA</span>
+                <button onclick="closeModal('invoice-modal')" class="text-slate-300 hover:text-white p-1 cursor-pointer"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <div id="invoice-modal-content" class="p-6"></div>
+        </div>
+    </div>
+
+    <div id="certificate-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-slate-900/75 backdrop-blur-sm">
+        <div class="bg-white rounded-3xl max-w-md w-full overflow-hidden shadow-2xl border border-slate-200">
+            <div class="p-4 bg-slate-100 flex items-center justify-between border-b border-slate-200">
+                <span class="text-xs font-bold uppercase tracking-wider text-slate-600">Certificado de Trazabilidad</span>
+                <button onclick="closeModal('certificate-modal')" class="text-slate-500 hover:text-slate-900 p-1 cursor-pointer"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <div class="p-6">
+                <div class="rounded-2xl bg-gradient-to-br from-nova-navyDark via-nova-navy to-nova-navyLight text-white p-6 relative overflow-hidden shadow-xl border border-nova-cyan/30">
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="flex items-center gap-2">
+                            <div class="w-8 h-8 rounded-lg bg-white/10 border border-nova-cyan/40 flex items-center justify-center font-mono font-extrabold text-xs text-nova-cyan">N3D</div>
+                            <span class="font-extrabold tracking-tight text-sm">NOVA • 3D STUDIO</span>
+                        </div>
+                        <span id="cert-id" class="font-mono text-xs bg-nova-cyan/20 border border-nova-cyan/40 px-2.5 py-1 rounded-full text-nova-cyan font-bold">ID: N3D-4821</span>
+                    </div>
+                    <p class="text-[11px] uppercase tracking-widest text-nova-cyan font-bold">Certificado Juguetes con Propósito</p>
+                    <h4 id="cert-donor" class="text-2xl font-extrabold mt-1 mb-4">Donante Anónimo</h4>
+                    <div class="grid grid-cols-2 gap-3 bg-white/10 rounded-xl p-3.5 mb-5 backdrop-blur-sm border border-white/10">
+                        <div>
+                            <p class="text-[11px] text-slate-200">Filamento Financiado</p>
+                            <p id="cert-grams" class="font-mono font-extrabold text-lg text-nova-cyan">588g PLA</p>
+                        </div>
+                        <div>
+                            <p class="text-[11px] text-slate-200">Juguetes Impresos</p>
+                            <p id="cert-toys" class="font-mono font-extrabold text-lg text-white">2 Juguetes</p>
+                        </div>
+                    </div>
+                    <p class="text-xs text-slate-100 leading-relaxed mb-4" id="cert-toys-list"></p>
+                    <div class="pt-3 border-t border-white/15 flex items-center justify-between text-[11px] text-slate-300">
+                        <span>Auditado gramo a gramo</span>
+                        <span class="font-mono text-nova-cyan">NOVA 3D Printing Studio</span>
+                    </div>
+                </div>
+                <button onclick="copyTextToClipboard(document.getElementById('cert-share-text').value)" class="mt-4 w-full py-3 rounded-xl bg-nova-navy hover:bg-nova-navyDark text-white font-bold text-sm flex items-center justify-center gap-2 cursor-pointer">
+                    <i data-lucide="share-2" class="w-4 h-4 text-nova-cyan"></i> Copiar Texto para Compartir
+                </button>
+                <input type="hidden" id="cert-share-text" value="">
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- SCRIPT PRINCIPAL -->
+    <!-- ===================================================================== -->
     <script>
-        // 👇 AQUÍ VA TU URL DE GOOGLE APPS SCRIPT 👇
+        // 👇 PEGA AQUÍ TU URL DE GOOGLE APPS SCRIPT 👇
         const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwCHvK1GQSGaFAYhQTkRCZqBSuoWHw544K3IcV7ZcG2LW9G6h7lP1wwuHHsxONl5AeHuA/exec";
 
-        // Datos de respaldo...
-        const FALLBACK_SPOOLS = [ { id: "PLA-01", brandColor: "eSUN PLA+", initialGrams: 1000, costCOP: 85000, costPerGram: 85, status: "Activo" } ];
-        const FALLBACK_DONATIONS = [ { id: "N3D-4821", date: "2026-11-11", donorName: "Donante Anónimo", isAnonymous: true, amountCOP: 50000, spoolId: "PLA-01", gramsFunded: 588, status: "En Producción" } ];
-        const FALLBACK_TOYS = [];
+        // Datos de respaldo
+        const FALLBACK_SPOOLS = [
+            { id: "PLA-01", purchaseDate: "2026-11-10", brandColor: "eSUN PLA+ Azul Cielo", initialGrams: 1000, costCOP: 85000, costPerGram: 85, invoiceUrl: "", status: "En uso activo" },
+            { id: "PLA-02", purchaseDate: "2026-11-14", brandColor: "Sunlu PLA Silk Verde Esmeralda", initialGrams: 1000, costCOP: 88000, costPerGram: 88, invoiceUrl: "", status: "En uso activo" }
+        ];
+        const FALLBACK_DONATIONS = [
+            { id: "N3D-4821", date: "2026-11-11", donorName: "Donante Anónimo", isAnonymous: true, amountCOP: 50000, spoolId: "PLA-01", gramsFunded: 588, status: "En Producción" },
+            { id: "N3D-3104", date: "2026-11-12", donorName: "Laura Martínez", isAnonymous: false, amountCOP: 35000, spoolId: "PLA-01", gramsFunded: 412, status: "Completado" }
+        ];
+        const FALLBACK_TOYS = [
+            { id: "JUG-001", date: "2026-11-12", name: "Dinosaurio Rex Articulado", grams: 165, spoolId: "PLA-01", donationId: "N3D-4821", status: "Entregado", destination: "Fundación Hospital Infantil San Vicente", photoUrl: "https://drive.google.com/uc?export=view&id=1ZFPzxHfjCiwDT7fhbkfnwGo_V76UIvlu" }
+        ];
 
         let spoolsData = [], donationsData = [], toysData = [], temporaryDonations = [], currentSelectedDonationId = "", tempNewDonation = null;
 
-        // Utilidades de normalización
+        // Utilidades
         function normalizeString(str) { return str ? String(str).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, ' ').trim() : ''; }
         function parseCleanNumber(val) { if (!val) return 0; const str = String(val).replace(/[$\s,gG%]/g, '').replace(/[^0-9.-]/g, ''); return isNaN(parseFloat(str)) ? 0 : parseFloat(str); }
         function formatCOP(amount) { return new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(amount); }
 
-        // Mapeos de JSON a Objetos
+        // Mapeos de Excel
         function mapDonations(rows) {
             if (!rows || rows.length < 2) return null;
             const headers = rows[0].map(h => normalizeString(h));
@@ -256,22 +463,46 @@
                 gramsFunded: parseCleanNumber(getCol(r, ['gramos_asignados'])), status: getCol(r, ['estado']) || 'Verificado'
             }));
         }
-        function mapSpools(rows) { return FALLBACK_SPOOLS; } // Simplificado para brevedad
-        function mapToys(rows) { return FALLBACK_TOYS; }
+        function mapSpools(rows) {
+            if (!rows || rows.length < 2) return null;
+            const headers = rows[0].map(h => normalizeString(h));
+            const getCol = (row, names) => { for (let n of names) { let i = headers.indexOf(normalizeString(n)); if (i !== -1 && row[i]) return String(row[i]).trim(); } return ''; };
+            if (!headers.includes(normalizeString('codigo_lote'))) return null;
+            return rows.slice(1).filter(r => getCol(r, ['codigo_lote']).toUpperCase().startsWith('PLA')).map(r => ({
+                id: getCol(r, ['codigo_lote']), purchaseDate: getCol(r, ['fecha_compra']), brandColor: getCol(r, ['marca_y_tipo']) + ' ' + getCol(r, ['color']),
+                initialGrams: parseCleanNumber(getCol(r, ['peso_inicial_g'])), costCOP: parseCleanNumber(getCol(r, ['costo_total_cop'])),
+                costPerGram: parseCleanNumber(getCol(r, ['costo_por_gramo_cop'])), invoiceUrl: getCol(r, ['enlace_factura_foto']), status: getCol(r, ['estado_rollo'])
+            }));
+        }
+        function mapToys(rows) {
+            if (!rows || rows.length < 2) return null;
+            const headers = rows[0].map(h => normalizeString(h));
+            const getCol = (row, names) => { for (let n of names) { let i = headers.indexOf(normalizeString(n)); if (i !== -1 && row[i]) return String(row[i]).trim(); } return ''; };
+            if (!headers.includes(normalizeString('id_juguete'))) return null;
+            return rows.slice(1).filter(r => getCol(r, ['id_juguete']).toUpperCase().startsWith('JUG')).map(r => ({
+                id: getCol(r, ['id_juguete']), date: getCol(r, ['fecha_impresion']), name: getCol(r, ['nombre_juguete']),
+                grams: parseCleanNumber(getCol(r, ['peso_slicer_g'])), spoolId: getCol(r, ['codigo_lote_pla']), donationId: getCol(r, ['id_donacion_asociada']),
+                status: getCol(r, ['estado_entrega']), destination: getCol(r, ['lugar_entrega']), photoUrl: getCol(r, ['enlace_foto_juguete'])
+            }));
+        }
 
-        // Carga y renderizado
+        // Sincronización
         async function syncFromGoogleSheets(showNotif = false) {
             const icon = document.getElementById('sync-icon');
             if (icon) icon.classList.add('animate-spin-fast');
             try {
                 const res = await fetch(APPS_SCRIPT_URL + "?_t=" + Date.now(), { cache: 'no-store' });
                 const data = await res.json();
-                donationsData = [...temporaryDonations, ...(mapDonations(data.donations) || FALLBACK_DONATIONS)];
+                
                 spoolsData = mapSpools(data.spools) || FALLBACK_SPOOLS;
+                donationsData = [...temporaryDonations, ...(mapDonations(data.donations) || FALLBACK_DONATIONS)];
                 toysData = mapToys(data.toys) || FALLBACK_TOYS;
+                
                 if (showNotif) showToast("Datos actualizados", "emerald");
             } catch (e) {
+                spoolsData = FALLBACK_SPOOLS;
                 donationsData = [...temporaryDonations, ...FALLBACK_DONATIONS];
+                toysData = FALLBACK_TOYS;
                 if (showNotif) showToast("Error de red. Modo local.", "amber");
             } finally {
                 if (icon) icon.classList.remove('animate-spin-fast');
@@ -280,72 +511,260 @@
         }
 
         function renderAllUI() {
-            document.getElementById('stat-total-cop').innerText = formatCOP(donationsData.reduce((s, d) => s + d.amountCOP, 0));
-            document.getElementById('stat-total-pla').innerText = "1.000 g";
-            document.getElementById('stat-spools-count').innerText = "1 bobina";
-            document.getElementById('stat-used-grams').innerText = "0 g";
-            document.getElementById('stat-total-toys').innerText = "0 juguetes";
+            // KPIs
+            const totalCOP = donationsData.reduce((acc, d) => acc + d.amountCOP, 0);
+            const totalSpoolGrams = spoolsData.reduce((acc, s) => acc + s.initialGrams, 0);
+            const totalUsedGrams = toysData.reduce((acc, t) => acc + t.grams, 0);
+            const execPct = totalSpoolGrams > 0 ? Math.min(100, Math.round((totalUsedGrams / totalSpoolGrams) * 100)) : 0;
+
+            document.getElementById('stat-total-cop').innerText = formatCOP(totalCOP);
+            document.getElementById('stat-total-pla').innerText = `${totalSpoolGrams.toLocaleString('es-CO')} g`;
+            document.getElementById('stat-spools-count').innerText = `${spoolsData.length} bobinas registradas`;
+            document.getElementById('stat-used-grams').innerText = `${totalUsedGrams.toLocaleString('es-CO')} g`;
+            document.getElementById('stat-execution-pct').innerText = `${execPct}%`;
+            document.getElementById('stat-execution-bar').style.width = `${execPct}%`;
+            document.getElementById('stat-total-toys').innerText = `${toysData.length} juguetes`;
+
+            // Chips y Tablas
+            renderQuickChips();
             renderDonationsTable();
-            if (!currentSelectedDonationId) currentSelectedDonationId = donationsData[0]?.id;
+            renderSpoolsGrid();
+            renderToysGallery();
+            
+            if (!currentSelectedDonationId || !donationsData.some(d => d.id === currentSelectedDonationId)) {
+                currentSelectedDonationId = donationsData[0]?.id || '';
+            }
             if (currentSelectedDonationId) renderTraceability(currentSelectedDonationId);
+            
             lucide.createIcons();
         }
 
-        function renderDonationsTable() {
-            document.getElementById('donations-table-body').innerHTML = donationsData.map(d => `
-                <tr onclick="quickSelect('${d.id}')" class="hover:bg-slate-50 cursor-pointer">
-                    <td class="py-4 px-5 font-mono font-bold">${d.id}</td>
-                    <td class="py-4 px-5">${d.donorName}</td>
-                    <td class="py-4 px-5 font-mono">${formatCOP(d.amountCOP)}</td>
-                    <td class="py-4 px-5">${d.spoolId}</td>
-                    <td class="py-4 px-5"><span class="bg-slate-100 px-2 py-1 rounded text-xs">${d.status}</span></td>
-                    <td class="py-4 px-5 text-right">Ver</td>
-                </tr>
-            `).join('');
+        function renderQuickChips() {
+            const container = document.getElementById('quick-chips-container');
+            if (!container) return;
+            container.innerHTML = `<span class="text-slate-200 font-medium">Consulta rápida:</span> ` + donationsData.slice(0, 5).map(d => 
+                `<button onclick="quickSelect('${d.id}')" class="font-mono px-2.5 py-1 rounded-lg bg-nova-navyDark/90 hover:bg-nova-cyan hover:text-nova-navyDark text-nova-cyan border border-nova-cyan/30 transition cursor-pointer">${d.id}</button>`
+            ).join('');
+        }
+
+        function getToyEmoji(name) {
+            const n = name.toLowerCase();
+            if (n.includes('dino') || n.includes('rex')) return '🦖';
+            if (n.includes('carro') || n.includes('monster')) return '🚙';
+            if (n.includes('cohete')) return '🚀';
+            if (n.includes('pulpo')) return '🐙';
+            if (n.includes('dragón') || n.includes('dragon')) return '🐉';
+            if (n.includes('peonza')) return '🪀';
+            return '🧸';
+        }
+
+        function getSpoolColorHex(brandColor) {
+            const b = brandColor.toLowerCase();
+            if (b.includes('azul')) return '#2A6891';
+            if (b.includes('verde')) return '#10B981';
+            if (b.includes('amarillo')) return '#F59E0B';
+            if (b.includes('turquesa')) return '#50C8D0';
+            return '#1E4E6E';
         }
 
         function renderTraceability(id) {
             const d = donationsData.find(x => x.id === id);
             if (!d) return;
-            document.getElementById('traceability-result').innerHTML = `
-                <div class="border-b pb-4 mb-4">
-                    <h3 class="text-2xl font-extrabold">${d.donorName} <span class="text-sm bg-navy text-white px-2 rounded">${d.id}</span></h3>
-                    <p class="text-slate-500">Aporte: ${formatCOP(d.amountCOP)} • Gramos: ${d.gramsFunded}g</p>
+            const spool = spoolsData.find(s => s.id === d.spoolId) || spoolsData[0];
+            const associatedToys = toysData.filter(t => t.donationId.toLowerCase() === d.id.toLowerCase());
+            const gramsUsed = associatedToys.reduce((sum, t) => sum + t.grams, 0);
+            const gramsRemaining = Math.max(0, d.gramsFunded - gramsUsed);
+            const percentUsed = d.gramsFunded > 0 ? Math.min(100, Math.round((gramsUsed / d.gramsFunded) * 100)) : 0;
+            const spoolColor = getSpoolColorHex(spool.brandColor);
+
+            const toysHTML = associatedToys.length > 0 ? associatedToys.map(toy => `
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-2xl bg-slate-50 border border-slate-200 hover:border-nova-cyan transition">
+                    <div class="flex items-start sm:items-center gap-3.5">
+                        <div class="w-12 h-12 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-2xl shadow-sm shrink-0">${getToyEmoji(toy.name)}</div>
+                        <div>
+                            <div class="flex flex-wrap items-center gap-2">
+                                <span class="font-mono text-[11px] font-bold text-nova-navy bg-nova-cyanLight px-2 py-0.5 rounded">${toy.id}</span>
+                                <p class="font-bold text-nova-navyDark text-sm">${toy.name}</p>
+                            </div>
+                            <p class="text-xs text-slate-600 mt-1 flex items-center gap-1"><i data-lucide="map-pin" class="w-3.5 h-3.5 text-nova-cyanDark"></i>${toy.destination}</p>
+                            <div class="flex items-center gap-2 mt-1">
+                                <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full ${toy.status.toLowerCase().includes('entregado') ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}">${toy.status}</span>
+                                <span class="text-[11px] text-slate-400">${toy.date}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex sm:flex-col items-center sm:items-end justify-between border-t sm:border-t-0 pt-2 sm:pt-0 border-slate-200">
+                        <span class="font-mono font-extrabold text-sm text-nova-navyDark bg-white px-3 py-1 rounded-lg border border-slate-300 shadow-xs">${toy.grams} g PLA</span>
+                        ${toy.photoUrl ? `<a href="${toy.photoUrl}" target="_blank" class="mt-1.5 inline-flex items-center gap-1 text-xs font-bold text-nova-cyanDark hover:text-nova-navy transition"><i data-lucide="image" class="w-3.5 h-3.5"></i> Ver foto</a>` : ''}
+                    </div>
                 </div>
-                <p class="text-sm text-slate-600">Este aporte está en estado: <strong>${d.status}</strong>.</p>
+            `).join('') : `<div class="p-6 rounded-2xl bg-nova-cyanLight/50 border border-nova-cyan/40 text-center"><p class="text-sm font-bold text-nova-navyDark">¡Filamento asignado en cola de impresión!</p><p class="text-xs text-slate-600 mt-1">Tus ${d.gramsFunded}g están reservados en el lote ${spool.id}.</p></div>`;
+
+            document.getElementById('traceability-result').innerHTML = `
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-200">
+                    <div>
+                        <div class="flex flex-wrap items-center gap-2">
+                            <span class="font-mono font-extrabold text-sm px-3 py-1 rounded-lg bg-nova-navyDark text-nova-cyan">ID: ${d.id}</span>
+                            <span class="text-xs font-bold px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">${d.status}</span>
+                        </div>
+                        <h3 class="text-2xl font-extrabold text-nova-navyDark mt-2">${d.donorName} ${d.isAnonymous ? '<span class="text-xs font-semibold bg-slate-100 text-slate-600 px-2.5 py-0.5 rounded-md border border-slate-200">Anónimo</span>' : ''}</h3>
+                        <p class="text-xs text-slate-500 mt-0.5">Aporte registrado el ${d.date}</p>
+                    </div>
+                    <button onclick="openCertificateModal('${d.id}')" class="inline-flex items-center justify-center gap-2 bg-nova-navy hover:bg-nova-navyDark text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-sm transition cursor-pointer self-start sm:self-center"><i data-lucide="award" class="w-4 h-4 text-nova-cyan"></i>Ver Certificado</button>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 pt-6">
+                    <div class="lg:col-span-5 space-y-4">
+                        <div class="p-4 rounded-2xl bg-nova-cyanLight/60 border border-nova-cyan/40">
+                            <span class="text-xs font-bold uppercase tracking-wider text-nova-navy">1. Aporte Financiero</span>
+                            <p class="font-mono text-2xl font-extrabold text-nova-navyDark mt-1">${formatCOP(d.amountCOP)}</p>
+                            <p class="text-xs text-slate-700 mt-1">Equivale a <strong>${d.gramsFunded} gramos</strong> de filamento.</p>
+                        </div>
+                        <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-xs font-bold uppercase tracking-wider text-nova-navy">2. Lote de PLA</span>
+                                <span class="font-mono text-xs font-extrabold bg-nova-navy text-white px-2.5 py-0.5 rounded">${spool.id}</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-full border-4 border-white shadow-md shrink-0" style="background-color: ${spoolColor};"></div>
+                                <div><p class="font-bold text-sm text-nova-navyDark">${spool.brandColor}</p><p class="text-xs text-slate-500">${formatCOP(spool.costCOP)}</p></div>
+                            </div>
+                            <div class="mt-3 flex gap-2">
+                                <button onclick="openInvoiceModal('${spool.id}')" class="flex-1 py-2 px-3 rounded-xl bg-white hover:bg-slate-100 border border-slate-300 text-xs font-bold text-nova-navy flex items-center justify-center gap-1.5"><i data-lucide="file-text" class="w-3.5 h-3.5"></i>Ficha</button>
+                                ${spool.invoiceUrl ? `<a href="${spool.invoiceUrl}" target="_blank" class="py-2 px-3 rounded-xl bg-nova-navy text-white text-xs font-bold flex items-center justify-center gap-1"><i data-lucide="external-link" class="w-3.5 h-3.5"></i>Factura</a>` : ''}
+                            </div>
+                        </div>
+                        <div class="p-4 rounded-2xl bg-white border border-slate-200">
+                            <div class="flex justify-between text-xs font-bold mb-1.5"><span class="text-slate-700">Gramos convertidos</span><span class="font-mono text-nova-navy">${gramsUsed}g / ${d.gramsFunded}g (${percentUsed}%)</span></div>
+                            <div class="w-full h-3 bg-slate-100 rounded-full overflow-hidden"><div class="h-full bg-gradient-to-r from-nova-navy to-nova-cyan" style="width: ${percentUsed}%"></div></div>
+                            <div class="mt-2.5 flex justify-between text-[11px] text-slate-500"><span>Impresos: <strong>${gramsUsed}g</strong></span><span>Pendientes: <strong>${gramsRemaining}g</strong></span></div>
+                        </div>
+                    </div>
+                    <div class="lg:col-span-7">
+                        <div class="flex items-center justify-between mb-3"><span class="text-xs font-bold uppercase tracking-wider text-nova-navy">3. Juguetes (${associatedToys.length})</span><span class="text-xs font-mono font-bold text-slate-500">Total: ${gramsUsed}g</span></div>
+                        <div class="space-y-3">${toysHTML}</div>
+                    </div>
+                </div>
             `;
+            lucide.createIcons();
         }
 
-        function quickSelect(id) { document.getElementById('search-input').value = id; executeSearch(); }
+        function renderDonationsTable() {
+            document.getElementById('donations-table-body').innerHTML = donationsData.map(d => {
+                const used = toysData.filter(t => t.donationId.toLowerCase() === d.id.toLowerCase()).reduce((s, t) => s + t.grams, 0);
+                const pct = d.gramsFunded > 0 ? Math.min(100, Math.round((used / d.gramsFunded) * 100)) : 0;
+                return `
+                    <tr onclick="quickSelect('${d.id}')" class="hover:bg-nova-cyanLight/30 transition cursor-pointer group">
+                        <td class="py-4 px-5 font-mono font-extrabold text-nova-navy">${d.id}</td>
+                        <td class="py-4 px-5"><div class="font-bold text-nova-navyDark">${d.donorName}</div><div class="text-xs text-slate-400">${d.date}</div></td>
+                        <td class="py-4 px-5 font-mono font-bold text-slate-800">${formatCOP(d.amountCOP)}</td>
+                        <td class="py-4 px-5"><span class="font-mono text-xs bg-nova-navy text-white px-2 py-0.5 rounded font-bold">${d.spoolId}</span><span class="text-xs text-slate-500 ml-1">(${d.gramsFunded}g)</span></td>
+                        <td class="py-4 px-5"><div class="flex items-center gap-2"><div class="w-20 h-2 bg-slate-100 rounded-full overflow-hidden"><div class="h-full bg-nova-cyan" style="width: ${pct}%"></div></div><span class="font-mono text-xs font-bold text-slate-700">${used}g</span></div></td>
+                        <td class="py-4 px-5"><span class="text-xs font-semibold px-2.5 py-1 rounded-full bg-slate-100 text-slate-700">${d.status}</span></td>
+                        <td class="py-4 px-5 text-right"><span class="inline-flex items-center gap-1 text-xs font-bold text-nova-navy group-hover:text-nova-cyanDark transition">Auditar <i data-lucide="chevron-right" class="w-4 h-4"></i></span></td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function renderSpoolsGrid() {
+            document.getElementById('ledger-spools').innerHTML = spoolsData.map(spool => {
+                const used = toysData.filter(t => t.spoolId.toLowerCase() === spool.id.toLowerCase()).reduce((s, t) => s + t.grams, 0);
+                const remain = Math.max(0, spool.initialGrams - used);
+                const pct = spool.initialGrams > 0 ? Math.min(100, Math.round((used / spool.initialGrams) * 100)) : 0;
+                const colorHex = getSpoolColorHex(spool.brandColor);
+                return `
+                    <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm flex flex-col justify-between hover:border-nova-cyan transition">
+                        <div>
+                            <div class="flex items-center justify-between mb-4"><span class="font-mono text-xs font-extrabold px-2.5 py-1 rounded-lg bg-nova-navyDark text-nova-cyan">${spool.id}</span><span class="text-xs font-semibold text-slate-500">${spool.purchaseDate}</span></div>
+                            <div class="flex items-center gap-3 mb-4"><div class="w-11 h-11 rounded-full border-4 border-slate-100 shadow-inner shrink-0" style="background-color: ${colorHex};"></div><div><h3 class="font-bold text-nova-navyDark">${spool.brandColor}</h3><p class="text-xs text-slate-500">${formatCOP(spool.costCOP)} • $${spool.costPerGram}/g</p></div></div>
+                            <div class="mb-3">
+                                <div class="flex justify-between text-xs font-bold mb-1"><span class="text-slate-600">Consumido</span><span class="font-mono text-nova-navyDark">${used}g / ${spool.initialGrams}g (${pct}%)</span></div>
+                                <div class="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden"><div class="h-full rounded-full" style="width: ${pct}%; background-color: ${colorHex};"></div></div>
+                                <p class="text-[11px] text-slate-500 mt-1.5">Disponible: <strong class="font-mono text-nova-navy">${remain}g</strong></p>
+                            </div>
+                        </div>
+                        <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs"><span class="font-semibold text-slate-600">${spool.status}</span><button onclick="openInvoiceModal('${spool.id}')" class="text-nova-navy font-bold hover:text-nova-cyanDark">Detalle →</button></div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderToysGallery() {
+            document.getElementById('ledger-toys').innerHTML = toysData.map(toy => `
+                <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm flex flex-col justify-between hover:border-nova-cyan transition">
+                    <div>
+                        <div class="flex items-center justify-between mb-3"><span class="font-mono text-xs font-bold text-nova-navy bg-nova-cyanLight px-2.5 py-0.5 rounded">${toy.id}</span><span class="font-mono text-xs font-extrabold text-nova-navyDark bg-slate-100 px-2.5 py-0.5 rounded">${toy.grams}g</span></div>
+                        <div class="w-14 h-14 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-center text-3xl mb-3">${getToyEmoji(toy.name)}</div>
+                        <h3 class="font-bold text-nova-navyDark text-base leading-snug">${toy.name}</h3>
+                        <p class="text-xs text-slate-500 mt-1 flex items-start gap-1"><i data-lucide="map-pin" class="w-3.5 h-3.5 text-nova-cyanDark shrink-0 mt-0.5"></i>${toy.destination}</p>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+                        <button onclick="quickSelect('${toy.donationId}')" class="font-mono font-bold text-nova-navy hover:text-nova-cyanDark">Aporte: ${toy.donationId}</button>
+                        ${toy.photoUrl ? `<a href="${toy.photoUrl}" target="_blank" class="text-nova-cyanDark font-bold hover:underline inline-flex items-center gap-1">Foto <i data-lucide="external-link" class="w-3 h-3"></i></a>` : `<span class="text-slate-400">${toy.status}</span>`}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function switchLedgerTab(tab) {
+            ['donations', 'spools', 'toys'].forEach(t => {
+                const btn = document.getElementById(`tab-btn-${t}`);
+                const view = document.getElementById(`ledger-${t}`);
+                if (t === tab) { btn.className = 'px-4 py-2 rounded-lg text-xs sm:text-sm font-bold bg-nova-navy text-white shadow-sm transition cursor-pointer'; view.classList.remove('hidden'); }
+                else { btn.className = 'px-4 py-2 rounded-lg text-xs sm:text-sm font-bold text-slate-700 hover:text-nova-navy transition cursor-pointer'; view.classList.add('hidden'); }
+            });
+            lucide.createIcons();
+        }
+
+        function handleSearchInput(e) { if (e.key === 'Enter') executeSearch(); }
+        function quickSelect(id) { document.getElementById('search-input').value = id; executeSearch(); document.getElementById('rastreador').scrollIntoView({ behavior: 'smooth' }); }
         function executeSearch() {
             const q = document.getElementById('search-input').value.trim().toLowerCase();
             const found = donationsData.find(d => d.id.toLowerCase() === q || d.donorName.toLowerCase().includes(q));
-            if (found) { currentSelectedDonationId = found.id; renderTraceability(found.id); }
-            else { document.getElementById('traceability-result').innerHTML = `<p class="text-center text-slate-500 py-10">No se encontraron registros.</p>`; }
+            if (found) { currentSelectedDonationId = found.id; renderTraceability(found.id); showToast(`Mostrando ${found.id}`, 'emerald'); }
+            else { document.getElementById('traceability-result').innerHTML = `<div class="text-center py-10"><p class="text-slate-500">No encontramos "${q}".</p></div>`; }
         }
-        function handleSearchInput(e) { if (e.key === 'Enter') executeSearch(); }
 
-        // Lógica del Modal
-        function openDonationModal() { document.getElementById('donation-step-form').classList.remove('hidden'); document.getElementById('donation-step-payment').classList.add('hidden'); document.getElementById('donation-modal').classList.replace('hidden', 'flex'); document.getElementById('generated-anon-id').innerText = `N3D-${Math.floor(1000 + Math.random() * 9000)}`; updateLiveGramCalculation(); }
-        function closeDonationModal() { document.getElementById('donation-modal').classList.replace('flex', 'hidden'); }
+        // Lógica Modal Donación
+        function openDonationModal() {
+            document.getElementById('donation-step-form').classList.remove('hidden');
+            document.getElementById('donation-step-payment').classList.add('hidden');
+            document.getElementById('generated-anon-id').innerText = `N3D-${Math.floor(1000 + Math.random() * 9000)}`;
+            updateLiveGramCalculation();
+            const m = document.getElementById('donation-modal'); m.classList.remove('hidden'); m.classList.add('flex');
+            lucide.createIcons();
+        }
+        function closeDonationModal() { const m = document.getElementById('donation-modal'); m.classList.add('hidden'); m.classList.remove('flex'); }
         function backToDonationForm() { document.getElementById('donation-step-payment').classList.add('hidden'); document.getElementById('donation-step-form').classList.remove('hidden'); }
-
-        function setDonationAmount(val, btn) { document.getElementById('donation-amount-input').value = val; document.querySelectorAll('.amount-preset').forEach(b => b.classList.remove('border-2', 'border-nova-navy', 'bg-nova-cyanLight')); btn.classList.add('border-2', 'border-nova-navy', 'bg-nova-cyanLight'); updateLiveGramCalculation(); }
-        function updateLiveGramCalculation() { document.getElementById('live-grams-preview').innerText = `${Math.round(document.getElementById('donation-amount-input').value / 85)} g`; }
-        function toggleAnonymousMode() { const isA = document.getElementById('anonymous-toggle').checked; document.getElementById('public-name-box').classList.toggle('hidden', isA); document.getElementById('anonymous-id-box').classList.toggle('hidden', !isA); }
-
+        
+        function setDonationAmount(amount, btnEl) {
+            document.getElementById('donation-amount-input').value = amount;
+            document.querySelectorAll('.amount-preset').forEach(btn => { btn.classList.remove('border-2', 'border-nova-navy', 'bg-nova-cyanLight/60', 'text-nova-navyDark'); btn.classList.add('border', 'border-slate-200', 'text-slate-700'); });
+            if (btnEl) { btnEl.classList.remove('border', 'border-slate-200', 'text-slate-700'); btnEl.classList.add('border-2', 'border-nova-navy', 'bg-nova-cyanLight/60', 'text-nova-navyDark'); }
+            updateLiveGramCalculation();
+        }
+        function updateLiveGramCalculation() {
+            const amount = parseInt(document.getElementById('donation-amount-input').value) || 0;
+            const cpg = spoolsData.length > 0 ? spoolsData[0].costPerGram : 85;
+            document.getElementById('live-grams-preview').innerText = `${Math.round(amount / cpg).toLocaleString('es-CO')} gramos de PLA`;
+        }
+        function toggleAnonymousMode() {
+            const isAnon = document.getElementById('anonymous-toggle').checked;
+            document.getElementById('public-name-box').classList.toggle('hidden', isAnon);
+            document.getElementById('anonymous-id-box').classList.toggle('hidden', !isAnon);
+            if (isAnon) document.getElementById('generated-anon-id').innerText = `N3D-${Math.floor(1000 + Math.random() * 9000)}`;
+        }
         function proceedToPaymentSimulation() {
             const amount = parseInt(document.getElementById('donation-amount-input').value);
             const isAnon = document.getElementById('anonymous-toggle').checked;
             const name = isAnon ? 'Donante Anónimo' : document.getElementById('donor-name-input').value.trim();
-
             if (!amount || amount < 5000 || (!isAnon && !name)) { showToast('Verifica el monto y tu nombre', 'amber'); return; }
-
             const id = isAnon ? document.getElementById('generated-anon-id').innerText : `N3D-${Math.floor(1000 + Math.random() * 9000)}`;
-
+            const activeSpool = spoolsData[spoolsData.length - 1] || spoolsData[0];
+            
             tempNewDonation = {
-                id: id, date: new Date().toISOString().split('T')[0], donorName: name, isAnonymous: isAnon,
-                amountCOP: amount, spoolId: spoolsData[0]?.id || 'PLA-01', gramsFunded: Math.round(amount / 85), status: 'Pendiente de Validación'
+                id, date: new Date().toISOString().split('T')[0], donorName: name, isAnonymous: isAnon,
+                amountCOP: amount, spoolId: activeSpool?.id || 'PLA-01', gramsFunded: Math.round(amount / (activeSpool?.costPerGram || 85)), status: 'Pendiente de Validación'
             };
 
             document.getElementById('payment-summary-title').innerText = `Donación de ${formatCOP(amount)}`;
@@ -355,51 +774,95 @@
             document.getElementById('donation-step-payment').classList.remove('hidden');
         }
 
-        // AQUÍ ESTÁ LA MAGIA: GUARDAR EN EXCEL
+        // 👇 GUARDAR EN EXCEL
         async function saveDonationToSheets() {
             if (!tempNewDonation) return;
             const btn = document.getElementById('btn-save-donation');
             const originalHTML = btn.innerHTML;
-            
             btn.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> Guardando en Excel...`;
             btn.disabled = true;
             lucide.createIcons();
 
             try {
-                // Enviamos los datos por POST a Google Apps Script
                 const response = await fetch(APPS_SCRIPT_URL, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'text/plain;charset=utf-8' }, // Evita problemas de CORS
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                     body: JSON.stringify(tempNewDonation)
                 });
-
                 const result = await response.json();
 
                 if (result.status === 'success') {
-                    // Éxito: Actualizamos la vista local y avisamos
                     donationsData.unshift(tempNewDonation);
                     renderAllUI();
                     closeDonationModal();
                     quickSelect(tempNewDonation.id);
-                    showToast(`¡Donación guardada en el Excel! Recuerda enviar el comprobante al WhatsApp.`, 'emerald');
-                } else {
-                    throw new Error(result.message || 'Error desconocido');
-                }
+                    showToast(`¡Donación guardada en el Excel! Envía el comprobante al WhatsApp.`, 'emerald');
+                } else { throw new Error('Error al guardar'); }
             } catch (error) {
                 console.error(error);
-                showToast(`Error al conectar con Excel. Asegúrate de haber actualizado el Script.`, 'amber');
+                showToast('Error al conectar con Excel. Revisa tu Script.', 'amber');
                 btn.innerHTML = originalHTML;
                 btn.disabled = false;
                 lucide.createIcons();
             }
         }
 
-        function showToast(msg, color = 'emerald') {
-            const t = document.createElement('div');
-            t.className = `${color === 'amber' ? 'bg-amber-600' : 'bg-nova-navyDark'} text-white text-xs font-bold px-4 py-3 rounded-xl shadow-xl mb-2 pointer-events-auto transition-opacity`;
-            t.innerText = msg;
-            document.getElementById('toast-container').appendChild(t);
-            setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.remove(), 300); }, 3500);
+        // Modales Ficha y Certificado
+        function openInvoiceModal(spoolId) {
+            const spool = spoolsData.find(s => s.id === spoolId);
+            if (!spool) return;
+            const used = toysData.filter(t => t.spoolId.toLowerCase() === spool.id.toLowerCase()).reduce((s, t) => s + t.grams, 0);
+            document.getElementById('invoice-modal-content').innerHTML = `
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between border-b border-slate-200 pb-3"><div><p class="text-xs text-slate-400 uppercase font-bold">Código de Lote</p><p class="font-mono font-extrabold text-xl text-nova-navyDark">${spool.id}</p></div><span class="px-3 py-1 rounded-full text-xs font-bold bg-nova-cyanLight text-nova-navyDark border border-nova-cyan/40">${spool.status}</span></div>
+                    <div class="text-sm space-y-2.5">
+                        <div class="flex justify-between"><span class="text-slate-500">Marca y Color:</span><span class="font-bold text-nova-navyDark text-right">${spool.brandColor}</span></div>
+                        <div class="flex justify-between"><span class="text-slate-500">Peso Inicial:</span><span class="font-mono font-bold">${spool.initialGrams} g</span></div>
+                        <div class="flex justify-between"><span class="text-slate-500">Gramos Usados:</span><span class="font-mono font-bold text-nova-navy">${used} g</span></div>
+                        <div class="flex justify-between"><span class="text-slate-500">Costo Total:</span><span class="font-mono font-bold text-emerald-700">${formatCOP(spool.costCOP)}</span></div>
+                        <div class="flex justify-between"><span class="text-slate-500">Costo por Gramo:</span><span class="font-mono font-bold">$${spool.costPerGram} COP</span></div>
+                    </div>
+                    ${spool.invoiceUrl ? `<a href="${spool.invoiceUrl}" target="_blank" class="mt-2 w-full py-3 rounded-xl bg-nova-navy text-white font-bold text-xs flex items-center justify-center gap-2"><i data-lucide="external-link" class="w-4 h-4 text-nova-cyan"></i>Ver Factura</a>` : ''}
+                </div>
+            `;
+            const m = document.getElementById('invoice-modal'); m.classList.remove('hidden'); m.classList.add('flex');
+            lucide.createIcons();
+        }
+
+        function openCertificateModal(donationId) {
+            const d = donationsData.find(item => item.id === donationId);
+            if (!d) return;
+            const associatedToys = toysData.filter(t => t.donationId.toLowerCase() === d.id.toLowerCase());
+            document.getElementById('cert-id').innerText = `ID: ${d.id}`;
+            document.getElementById('cert-donor').innerText = d.donorName;
+            document.getElementById('cert-grams').innerText = `${d.gramsFunded}g PLA`;
+            document.getElementById('cert-toys').innerText = `${associatedToys.length} Juguetes`;
+            document.getElementById('cert-toys-list').innerHTML = associatedToys.length > 0 ? associatedToys.map(t => `• ${t.name} (${t.grams}g)`).join('<br>') : '• Filamento asignado.';
+            document.getElementById('cert-share-text').value = `¡Aporté ${d.gramsFunded}g de filamento PLA en NOVA • 3D Printing Studio! Audita mi aporte con el código ${d.id}.`;
+            const m = document.getElementById('certificate-modal'); m.classList.remove('hidden'); m.classList.add('flex');
+            lucide.createIcons();
+        }
+
+        function closeModal(id) { const m = document.getElementById(id); m.classList.add('hidden'); m.classList.remove('flex'); }
+
+        function copyTextToClipboard(text) {
+            const tempInput = document.createElement('textarea');
+            tempInput.value = text;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+            showToast(`Copiado: ${text}`, 'emerald');
+        }
+
+        function showToast(message, color = 'emerald') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `${color === 'amber' ? 'bg-amber-600' : 'bg-nova-navyDark border border-nova-cyan/40'} text-white text-xs font-semibold px-4 py-3 rounded-xl shadow-xl flex items-center gap-2 pointer-events-auto transition-all duration-300`;
+            toast.innerHTML = `<i data-lucide="info" class="w-4 h-4 text-nova-cyan shrink-0"></i><span>${message}</span>`;
+            container.appendChild(toast);
+            lucide.createIcons();
+            setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 300); }, 3200);
         }
 
         window.addEventListener('DOMContentLoaded', () => syncFromGoogleSheets(false));
