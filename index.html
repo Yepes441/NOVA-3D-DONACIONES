@@ -901,7 +901,7 @@
                 // Añadir timestamp para evitar caché del navegador al pulsar Actualizar
                 const cacheBuster = `&_t=${Date.now()}`;
                 const responses = await Promise.all(
-                    GOOGLE_SHEET_CSV_URLS.map(url => fetch(url + cacheBuster).then(res => {
+                    GOOGLE_SHEET_CSV_URLS.map(url => fetch(url + cacheBuster, { cache: 'no-store' }).then(res => {
                         if (!res.ok) throw new Error(`HTTP ${res.status}`);
                         return res.text();
                     }))
