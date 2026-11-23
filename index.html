@@ -426,13 +426,11 @@
                     <i data-lucide="qr-code" class="w-3.5 h-3.5"></i> Transferencia Nequi / Bre-B / Bancolombia
                 </div>
                 <h4 class="text-xl font-extrabold text-nova-navyDark" id="payment-summary-title">Donación de $35.000 COP</h4>
-                
-                <p class="text-sm text-slate-600 max-w-sm mx-auto leading-relaxed">
-                    Para validar tu aporte y que se refleje en el libro abierto, <strong>envía la foto de tu transferencia al WhatsApp <a href="https://wa.me/573209806075" target="_blank" class="text-nova-navy font-bold underline">320 980 6075</a></strong> junto con tu código:
+                <p class="text-xs text-slate-600 max-w-sm mx-auto leading-relaxed">
+                    Incluye tu código <strong id="payment-inline-id" class="font-mono text-nova-navy">N3D-XXXX</strong> en la nota de la transferencia y envíanos el comprobante por WhatsApp para validarlo en la hoja oficial de Google Sheets.
                 </p>
-                <p class="text-sm font-mono font-bold text-nova-navy bg-slate-100 py-1.5 rounded-lg border border-slate-200" id="payment-inline-id">N3D-XXXX</p>
 
-                <div class="w-40 h-40 mx-auto bg-white p-3 rounded-2xl border-2 border-dashed border-nova-navy/40 flex items-center justify-center my-4">
+                <div class="w-40 h-40 mx-auto bg-white p-3 rounded-2xl border-2 border-dashed border-nova-navy/40 flex items-center justify-center">
                     <svg viewBox="0 0 100 100" class="w-full h-full text-nova-navyDark" fill="currentColor">
                         <rect x="10" y="10" width="25" height="25" rx="3" fill="none" stroke="currentColor" stroke-width="5"/>
                         <rect x="17" y="17" width="11" height="11" fill="#50C8D0"/>
@@ -458,9 +456,9 @@
 
                 <div class="flex gap-3 pt-2">
                     <button type="button" onclick="backToDonationForm()" class="w-1/3 py-3 rounded-xl border border-slate-300 text-slate-700 font-semibold text-sm hover:bg-slate-50 cursor-pointer">Volver</button>
-                    <button type="button" onclick="saveDonationToSheets()" id="btn-save-donation" class="w-2/3 py-3 rounded-xl bg-nova-navy hover:bg-nova-navyDark text-white font-bold text-sm shadow-lg shadow-nova-navy/20 flex items-center justify-center gap-2 cursor-pointer transition-all">
+                    <button type="button" onclick="completeSimulatedDonation()" class="w-2/3 py-3 rounded-xl bg-nova-navy hover:bg-nova-navyDark text-white font-bold text-sm shadow-lg shadow-nova-navy/20 flex items-center justify-center gap-2 cursor-pointer">
                         <i data-lucide="check-circle-2" class="w-4 h-4 text-nova-cyan"></i>
-                        Ya transferí, guardar ID
+                        Simular y Probar mi ID
                     </button>
                 </div>
             </div>
@@ -533,9 +531,10 @@
         // =====================================================================
         // 📍 PEGA AQUÍ TU URL DE GOOGLE APPS SCRIPT
         // =====================================================================
-        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwVwz5o_4qaQWUcd7w6KKV-slsGSmpJiiLDWRDg8RARzXdJQtcQWUI-ZuvGYKRU_0cqrA/exec";
+        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwVwz5o_4qaQWUcd7w6KKV-slsGSmpJiiLDWRDg8RARzXdJQtcQWUI-ZuvGYKRU_0cqrA/exec;"
         // =====================================================================
 
+        // Respaldo local por si falla la conexión
         const FALLBACK_SPOOLS = [
             { id: "PLA-01", purchaseDate: "2026-11-10", brandColor: "eSUN PLA+ Azul Cielo", initialGrams: 1000, costCOP: 85000, costPerGram: 85, invoiceUrl: "", status: "En uso activo" },
             { id: "PLA-02", purchaseDate: "2026-11-14", brandColor: "Sunlu PLA Silk Verde Esmeralda", initialGrams: 1000, costCOP: 88000, costPerGram: 88, invoiceUrl: "", status: "En uso activo" },
@@ -562,14 +561,23 @@
         let currentSelectedDonationId = "";
         let tempNewDonation = null;
 
-        function normalizeString(str) {
-            if (!str) return '';
-            return String(str)
-                .toLowerCase()
-                .normalize("NFD")
-                .replace(/[\u0300-\u036f]/g, "")
-                .replace(/\s+/g, ' ')
-                .trim();
+        // =====================================================================
+        // CONVERSIÓN DE FILAS (JSON) A OBJETOS
+        // =====================================================================
+        function rowsToObjects(rows) {
+            if (!rows || rows.length < 2) return [];
+            const headers = rows[0].map(h => String(h).trim().toLowerCase());
+            const dataRows = rows.slice(1);
+
+            const getCol = (row, possibleNames) => {
+                for (const name of possibleNames) {
+                    const idx = headers.indexOf(name.toLowerCase());
+                    if (idx !== -1 && row[idx] !== undefined && row[idx] !== null) return String(row[idx]).trim();
+                }
+                return '';
+            };
+
+            return { headers, dataRows, getCol };
         }
 
         function parseCleanNumber(val) {
@@ -581,117 +589,121 @@
 
         function mapDonations(rows) {
             if (!rows || rows.length < 2) return null;
-            const headers = rows[0].map(h => normalizeString(h));
+            const headers = rows[0].map(h => String(h).trim().toLowerCase());
             const dataRows = rows.slice(1);
 
             const getCol = (row, possibleNames) => {
                 for (const name of possibleNames) {
-                    const idx = headers.indexOf(normalizeString(name));
+                    const idx = headers.indexOf(name.toLowerCase());
                     if (idx !== -1 && row[idx] !== undefined && row[idx] !== null) return String(row[idx]).trim();
                 }
                 return '';
             };
 
-            if (!headers.includes(normalizeString('id_donacion'))) return null;
+            // Solo procesar si es la pestaña correcta
+            if (!headers.includes('id_donacion')) return null;
 
             return dataRows
                 .filter(r => {
-                    const id = getCol(r, ['id_donacion']);
+                    const id = getCol(r, ['ID_Donacion']);
                     return id && id.toUpperCase().startsWith('N3D');
                 })
                 .map(r => {
-                    const id = getCol(r, ['id_donacion']);
-                    const rawName = getCol(r, ['nombre_donante', 'donante']);
-                    const anonFlag = getCol(r, ['es_anonimo', 'anonimo']).toLowerCase();
+                    const id = getCol(r, ['ID_Donacion']);
+                    const rawName = getCol(r, ['Nombre_Donante', 'Donante']);
+                    const anonFlag = getCol(r, ['Es_Anonimo', 'Anonimo']).toLowerCase();
                     const isAnon = anonFlag === 'sí' || anonFlag === 'si' || anonFlag === 'true' || rawName.toLowerCase().includes('anónimo');
-                    const amount = parseCleanNumber(getCol(r, ['monto_cop', 'monto']));
-                    const spoolId = getCol(r, ['lote_pla_asignado', 'lote_pla']) || 'PLA-01';
-                    const gramsSheet = parseCleanNumber(getCol(r, ['gramos_pla_asignados', 'gramos_asignados']));
+                    const amount = parseCleanNumber(getCol(r, ['Monto_COP', 'Monto']));
+                    const spoolId = getCol(r, ['Lote_PLA_Asignado', 'Lote_PLA']) || 'PLA-01';
+                    const gramsSheet = parseCleanNumber(getCol(r, ['Gramos_PLA_Asignados', 'Gramos_Asignados']));
 
                     return {
                         id,
-                        date: getCol(r, ['fecha']) || '2026-11-15',
+                        date: getCol(r, ['Fecha']) || '2026-11-15',
                         donorName: isAnon ? 'Donante Anónimo' : (rawName || 'Donante Solidario'),
                         isAnonymous: isAnon,
                         amountCOP: amount,
                         spoolId,
                         gramsFunded: gramsSheet > 0 ? Math.round(gramsSheet) : Math.round(amount / 85),
-                        status: getCol(r, ['estado_donacion', 'estado']) || 'Verificado'
+                        status: getCol(r, ['Estado_Donacion', 'Estado']) || 'Verificado'
                     };
                 });
         }
 
         function mapSpools(rows) {
             if (!rows || rows.length < 2) return null;
-            const headers = rows[0].map(h => normalizeString(h));
+            const headers = rows[0].map(h => String(h).trim().toLowerCase());
             const dataRows = rows.slice(1);
 
             const getCol = (row, possibleNames) => {
                 for (const name of possibleNames) {
-                    const idx = headers.indexOf(normalizeString(name));
+                    const idx = headers.indexOf(name.toLowerCase());
                     if (idx !== -1 && row[idx] !== undefined && row[idx] !== null) return String(row[idx]).trim();
                 }
                 return '';
             };
 
-            if (!headers.includes(normalizeString('codigo_lote'))) return null;
+            if (!headers.includes('codigo_lote')) return null;
 
             return dataRows
                 .filter(r => {
-                    const code = getCol(r, ['codigo_lote']);
+                    const code = getCol(r, ['Codigo_Lote']);
                     return code && code.toUpperCase().startsWith('PLA');
                 })
                 .map(r => {
-                    const id = getCol(r, ['codigo_lote']);
-                    const initialGrams = parseCleanNumber(getCol(r, ['peso_inicial_g', 'peso_g'])) || 1000;
-                    const costCOP = parseCleanNumber(getCol(r, ['costo_total_cop', 'costo_cop'])) || 85000;
-                    const cpgSheet = parseCleanNumber(getCol(r, ['costo_por_gramo_cop']));
+                    const id = getCol(r, ['Codigo_Lote']);
+                    const initialGrams = parseCleanNumber(getCol(r, ['Peso_Inicial_g', 'Peso_g'])) || 1000;
+                    const costCOP = parseCleanNumber(getCol(r, ['Costo_Total_COP', 'Costo_COP'])) || 85000;
+                    const cpgSheet = parseCleanNumber(getCol(r, ['Costo_Por_Gramo_COP']));
                     return {
                         id,
-                        purchaseDate: getCol(r, ['fecha_compra', 'fecha']) || '2026-11-10',
-                        brandColor: getCol(r, ['marca_y_color', 'material', 'marca']) || 'PLA Estándar 1.75mm',
+                        purchaseDate: getCol(r, ['Fecha_Compra', 'Fecha']) || '2026-11-10',
+                        brandColor: getCol(r, ['Marca_y_Color', 'Material', 'Marca']) || 'PLA Estándar 1.75mm',
                         initialGrams,
                         costCOP,
                         costPerGram: cpgSheet > 0 ? Math.round(cpgSheet) : Math.round(costCOP / initialGrams),
-                        invoiceUrl: getCol(r, ['enlace_factura_foto', 'factura', 'enlace']) || '',
-                        status: getCol(r, ['estado_bobina', 'estado']) || 'Activo'
+                        invoiceUrl: getCol(r, ['Enlace_Factura_Foto', 'Factura', 'Enlace']) || '',
+                        status: getCol(r, ['Estado_Bobina', 'Estado']) || 'Activo'
                     };
                 });
         }
 
         function mapToys(rows) {
             if (!rows || rows.length < 2) return null;
-            const headers = rows[0].map(h => normalizeString(h));
+            const headers = rows[0].map(h => String(h).trim().toLowerCase());
             const dataRows = rows.slice(1);
 
             const getCol = (row, possibleNames) => {
                 for (const name of possibleNames) {
-                    const idx = headers.indexOf(normalizeString(name));
+                    const idx = headers.indexOf(name.toLowerCase());
                     if (idx !== -1 && row[idx] !== undefined && row[idx] !== null) return String(row[idx]).trim();
                 }
                 return '';
             };
 
-            if (!headers.includes(normalizeString('id_juguete'))) return null;
+            if (!headers.includes('id_juguete')) return null;
 
             return dataRows
                 .filter(r => {
-                    const jId = getCol(r, ['id_juguete']);
+                    const jId = getCol(r, ['ID_Juguete']);
                     return jId && jId.toUpperCase().startsWith('JUG');
                 })
                 .map(r => ({
-                    id: getCol(r, ['id_juguete']),
-                    date: getCol(r, ['fecha_impresion', 'fecha']) || '2026-11-15',
-                    name: getCol(r, ['nombre_juguete', 'juguete']) || 'Juguete Impreso 3D',
-                    grams: Math.round(parseCleanNumber(getCol(r, ['peso_slicer_g', 'gramos']))),
-                    spoolId: getCol(r, ['codigo_lote_pla', 'lote_pla']) || 'PLA-01',
-                    donationId: getCol(r, ['id_donacion_asociada', 'id_donacion']),
-                    status: getCol(r, ['estado_entrega', 'estado']) || 'Impreso',
-                    destination: getCol(r, ['lugar_entrega', 'destino']) || 'Fundación Infantil Aliada',
-                    photoUrl: getCol(r, ['enlace_foto_juguete', 'foto']) || ''
+                    id: getCol(r, ['ID_Juguete']),
+                    date: getCol(r, ['Fecha_Impresion', 'Fecha']) || '2026-11-15',
+                    name: getCol(r, ['Nombre_Juguete', 'Juguete']) || 'Juguete Impreso 3D',
+                    grams: Math.round(parseCleanNumber(getCol(r, ['Peso_Slicer_g', 'Gramos']))),
+                    spoolId: getCol(r, ['Codigo_Lote_PLA', 'Lote_PLA']) || 'PLA-01',
+                    donationId: getCol(r, ['ID_Donacion_Asociada', 'ID_Donacion']),
+                    status: getCol(r, ['Estado_Entrega', 'Estado']) || 'Impreso',
+                    destination: getCol(r, ['Lugar_Entrega', 'Destino']) || 'Fundación Infantil Aliada',
+                    photoUrl: getCol(r, ['Enlace_Foto_Juguete', 'Foto']) || ''
                 }));
         }
 
+        // =====================================================================
+        // SINCRONIZACIÓN CON APPS SCRIPT (SIEMPRE DATOS FRESCOS)
+        // =====================================================================
         async function syncFromGoogleSheets(showNotification = false) {
             const syncIcon = document.getElementById('sync-icon');
             const syncDot = document.getElementById('sync-dot');
@@ -701,6 +713,7 @@
             if (syncLabel) syncLabel.innerText = 'Sincronizando...';
 
             try {
+                // Verificar que la URL esté configurada
                 if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL.includes('PEGA_AQUI')) {
                     throw new Error('URL de Apps Script no configurada');
                 }
@@ -709,6 +722,7 @@
                 if (!response.ok) throw new Error(`HTTP ${response.status}`);
                 const data = await response.json();
 
+                // data.donations, data.spools, data.toys son arrays de arrays (filas)
                 const fetchedDonations = mapDonations(data.donations);
                 const fetchedSpools = mapSpools(data.spools);
                 const fetchedToys = mapToys(data.toys);
@@ -1241,7 +1255,7 @@
                 amountCOP: amount,
                 spoolId: activeSpool?.id || 'PLA-03',
                 gramsFunded,
-                status: 'Pendiente de Validación'
+                status: 'Registrado (Pendiente Validación)'
             };
 
             document.getElementById('payment-summary-title').innerText = `Donación de ${formatCOP(amount)}`;
@@ -1257,41 +1271,16 @@
             document.getElementById('donation-step-form').classList.remove('hidden');
         }
 
-        async function saveDonationToSheets() {
+        function completeSimulatedDonation() {
             if (!tempNewDonation) return;
 
-            const btn = document.getElementById('btn-save-donation');
-            const originalText = btn.innerHTML;
-            btn.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> Guardando...`;
-            btn.disabled = true;
-            lucide.createIcons();
+            temporaryDonations.unshift(tempNewDonation);
+            donationsData.unshift(tempNewDonation);
 
-            try {
-                const response = await fetch(APPS_SCRIPT_URL, {
-                    method: 'POST',
-                    body: JSON.stringify(tempNewDonation)
-                });
-                
-                const result = await response.json();
-
-                if (result.status === 'success') {
-                    temporaryDonations.unshift(tempNewDonation);
-                    donationsData.unshift(tempNewDonation);
-
-                    renderAllUI();
-                    closeDonationModal();
-                    quickSelect(tempNewDonation.id);
-                    showToast(`¡Listo! Tu donación fue registrada. Envía el comprobante al WhatsApp.`, 'emerald');
-                } else {
-                    throw new Error('Error al guardar');
-                }
-            } catch (error) {
-                console.error(error);
-                showToast('Error de conexión. Intenta de nuevo.', 'amber');
-                btn.innerHTML = originalText;
-                btn.disabled = false;
-                lucide.createIcons();
-            }
+            renderAllUI();
+            closeDonationModal();
+            quickSelect(tempNewDonation.id);
+            showToast(`¡Listo! Ya puedes auditar el código ${tempNewDonation.id} en el buscador`, 'emerald');
         }
 
         function openInvoiceModal(spoolId) {
