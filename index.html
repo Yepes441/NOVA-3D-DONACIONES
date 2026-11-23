@@ -458,7 +458,7 @@
                     <button type="button" onclick="backToDonationForm()" class="w-1/3 py-3 rounded-xl border border-slate-300 text-slate-700 font-semibold text-sm hover:bg-slate-50 cursor-pointer">Volver</button>
                     <button type="button" onclick="completeSimulatedDonation()" class="w-2/3 py-3 rounded-xl bg-nova-navy hover:bg-nova-navyDark text-white font-bold text-sm shadow-lg shadow-nova-navy/20 flex items-center justify-center gap-2 cursor-pointer">
                         <i data-lucide="check-circle-2" class="w-4 h-4 text-nova-cyan"></i>
-                        Simular y Probar mi ID
+                        Guardar y Registrar mi ID
                     </button>
                 </div>
             </div>
@@ -529,9 +529,9 @@
 
     <script>
         // =====================================================================
-        // 📍 PEGA AQUÍ TU URL DE GOOGLE APPS SCRIPT
+        // 📍 URL DE GOOGLE APPS SCRIPT
         // =====================================================================
-        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwVwz5o_4qaQWUcd7w6KKV-slsGSmpJiiLDWRDg8RARzXdJQtcQWUI-ZuvGYKRU_0cqrA/exec;"
+        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwxurw13ywus3PMYZnVxmkmzEMRFfGZKO5vcbFtaeb_rdJ6m_Iswyh4LybuXOk4bM187w/exec";
         // =====================================================================
 
         // Respaldo local por si falla la conexión
@@ -564,22 +564,6 @@
         // =====================================================================
         // CONVERSIÓN DE FILAS (JSON) A OBJETOS
         // =====================================================================
-        function rowsToObjects(rows) {
-            if (!rows || rows.length < 2) return [];
-            const headers = rows[0].map(h => String(h).trim().toLowerCase());
-            const dataRows = rows.slice(1);
-
-            const getCol = (row, possibleNames) => {
-                for (const name of possibleNames) {
-                    const idx = headers.indexOf(name.toLowerCase());
-                    if (idx !== -1 && row[idx] !== undefined && row[idx] !== null) return String(row[idx]).trim();
-                }
-                return '';
-            };
-
-            return { headers, dataRows, getCol };
-        }
-
         function parseCleanNumber(val) {
             if (val === undefined || val === null || val === '') return 0;
             const str = String(val).replace(/[$\s,gG%]/g, '').replace(/[^0-9.-]/g, '');
@@ -600,7 +584,6 @@
                 return '';
             };
 
-            // Solo procesar si es la pestaña correcta
             if (!headers.includes('id_donacion')) return null;
 
             return dataRows
@@ -713,7 +696,6 @@
             if (syncLabel) syncLabel.innerText = 'Sincronizando...';
 
             try {
-                // Verificar que la URL esté configurada
                 if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL.includes('PEGA_AQUI')) {
                     throw new Error('URL de Apps Script no configurada');
                 }
@@ -722,13 +704,19 @@
                 if (!response.ok) throw new Error(`HTTP ${response.status}`);
                 const data = await response.json();
 
-                // data.donations, data.spools, data.toys son arrays de arrays (filas)
                 const fetchedDonations = mapDonations(data.donations);
                 const fetchedSpools = mapSpools(data.spools);
                 const fetchedToys = mapToys(data.toys);
 
                 spoolsData = fetchedSpools && fetchedSpools.length > 0 ? fetchedSpools : FALLBACK_SPOOLS;
-                donationsData = [...temporaryDonations, ...(fetchedDonations && fetchedDonations.length > 0 ? fetchedDonations : FALLBACK_DONATIONS)];
+                const baseDonations = fetchedDonations && fetchedDonations.length > 0 ? fetchedDonations : FALLBACK_DONATIONS;
+
+                // Evita duplicar registros temporales si ya llegaron desde Google Sheets
+                const pendingTemp = temporaryDonations.filter(
+                    temp => !baseDonations.some(sheetItem => sheetItem.id === temp.id)
+                );
+                temporaryDonations = pendingTemp;
+                donationsData = [...temporaryDonations, ...baseDonations];
                 toysData = fetchedToys && fetchedToys.length > 0 ? fetchedToys : FALLBACK_TOYS;
 
                 donationsData = donationsData.map(d => {
@@ -1271,16 +1259,67 @@
             document.getElementById('donation-step-form').classList.remove('hidden');
         }
 
-        function completeSimulatedDonation() {
+        async function completeSimulatedDonation() {
             if (!tempNewDonation) return;
 
-            temporaryDonations.unshift(tempNewDonation);
-            donationsData.unshift(tempNewDonation);
+            const saveBtn = document.querySelector('#donation-step-payment button[onclick="completeSimulatedDonation()"]');
+            const originalBtnHTML = saveBtn ? saveBtn.innerHTML : '';
+            const payload = { ...tempNewDonation };
 
-            renderAllUI();
-            closeDonationModal();
-            quickSelect(tempNewDonation.id);
-            showToast(`¡Listo! Ya puedes auditar el código ${tempNewDonation.id} en el buscador`, 'emerald');
+            if (saveBtn) {
+                saveBtn.disabled = true;
+                saveBtn.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin text-nova-cyan"></i> Guardando en Excel...`;
+                lucide.createIcons();
+            }
+
+            try {
+                if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL.includes('PEGA_AQUI')) {
+                    throw new Error('URL de Apps Script no configurada');
+                }
+
+                const response = await fetch(APPS_SCRIPT_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'text/plain;charset=utf-8'
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Error HTTP ${response.status}`);
+                }
+
+                const result = await response.json();
+                if (result.status !== 'success') {
+                    throw new Error(result.message || 'No se pudo guardar en la hoja');
+                }
+
+                tempNewDonation = null;
+                closeDonationModal();
+                currentSelectedDonationId = payload.id;
+                document.getElementById('search-input').value = payload.id;
+
+                await syncFromGoogleSheets(false);
+                renderTraceabilityResult(payload.id);
+                document.getElementById('rastreador').scrollIntoView({ behavior: 'smooth' });
+                showToast(`¡Guardado en Google Sheets! Código ${payload.id} registrado.`, 'emerald');
+
+            } catch (error) {
+                console.error('Error al guardar donación:', error);
+                temporaryDonations.unshift(payload);
+                tempNewDonation = null;
+
+                renderAllUI();
+                closeDonationModal();
+                quickSelect(payload.id);
+                showToast(`Guardado localmente (${payload.id}). Revisa tu conexión o despliegue de Apps Script.`, 'amber');
+            } finally {
+                if (saveBtn) {
+                    saveBtn.disabled = false;
+                    saveBtn.innerHTML = originalBtnHTML;
+                    lucide.createIcons();
+                }
+            }
         }
 
         function openInvoiceModal(spoolId) {
