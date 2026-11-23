@@ -533,7 +533,7 @@
         // =====================================================================
         // 📍 PEGA AQUÍ TU URL DE GOOGLE APPS SCRIPT
         // =====================================================================
-        const APPS_SCRIPT_URL = "PEGA_AQUI_LA_URL_WEB_DE_TU_APPS_SCRIPT";
+        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwCHvK1GQSGaFAYhQTkRCZqBSuoWHw544K3IcV7ZcG2LW9G6h7lP1wwuHHsxONl5AeHuA/exec";
         // =====================================================================
 
         const FALLBACK_SPOOLS = [
@@ -659,26 +659,6 @@
                 });
         }
 
-        function escapeAttribute(value) {
-            return String(value || '')
-                .replace(/&/g, '&amp;')
-                .replace(/"/g, '&quot;')
-                .replace(/</g, '&lt;')
-                .replace(/>/g, '&gt;')
-                .replace(/'/g, '&#39;');
-        }
-
-        function normalizePhotoUrl(value) {
-            const url = String(value || '').trim();
-            if (!url) return '';
-            try {
-                const parsed = new URL(url);
-                return ['http:', 'https:'].includes(parsed.protocol) ? url : '';
-            } catch (_) {
-                return '';
-            }
-        }
-
         function mapToys(rows) {
             if (!rows || rows.length < 2) return null;
             const headers = rows[0].map(h => normalizeString(h));
@@ -708,7 +688,7 @@
                     donationId: getCol(r, ['id_donacion_asociada', 'id_donacion']),
                     status: getCol(r, ['estado_entrega', 'estado']) || 'Impreso',
                     destination: getCol(r, ['lugar_entrega', 'destino']) || 'Fundación Infantil Aliada',
-                    photoUrl: normalizePhotoUrl(getCol(r, ['enlace_foto_juguete', 'foto']))
+                    photoUrl: getCol(r, ['enlace_foto_juguete', 'foto']) || ''
                 }));
         }
 
@@ -934,7 +914,7 @@
                                 ${toy.grams} g PLA
                             </span>
                             ${toy.photoUrl ? `
-                                <a href="${escapeAttribute(toy.photoUrl)}" target="_blank" rel="noopener noreferrer" class="mt-1.5 inline-flex items-center gap-1 text-xs font-bold text-nova-cyanDark hover:text-nova-navy transition">
+                                <a href="${toy.photoUrl}" target="_blank" rel="noopener noreferrer" class="mt-1.5 inline-flex items-center gap-1 text-xs font-bold text-nova-cyanDark hover:text-nova-navy transition">
                                     <i data-lucide="image" class="w-3.5 h-3.5"></i> Ver foto
                                 </a>
                             ` : ''}
@@ -1131,12 +1111,8 @@
                             <span class="font-mono text-xs font-bold text-nova-navy bg-nova-cyanLight px-2.5 py-0.5 rounded">${toy.id}</span>
                             <span class="font-mono text-xs font-extrabold text-nova-navyDark bg-slate-100 px-2.5 py-0.5 rounded">${toy.grams}g</span>
                         </div>
-                        <div class="w-full h-40 rounded-xl bg-slate-50 border border-slate-200 overflow-hidden flex items-center justify-center mb-3">
-                            ${toy.photoUrl ? `
-                                <a href="${escapeAttribute(toy.photoUrl)}" target="_blank" rel="noopener noreferrer" class="w-full h-full flex items-center justify-center" title="Abrir fotografía del juguete">
-                                    <img src="${escapeAttribute(toy.photoUrl)}" alt="Fotografía de ${escapeAttribute(toy.name)}" class="w-full h-full object-contain" loading="lazy" onerror="this.style.display='none'; this.parentElement.innerHTML='<span class=&quot;text-4xl&quot;>${getToyEmoji(toy.name)}</span>';">
-                                </a>
-                            ` : `<span class="text-4xl">${getToyEmoji(toy.name)}</span>`}
+                        <div class="w-14 h-14 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-center text-3xl mb-3">
+                            ${getToyEmoji(toy.name)}
                         </div>
                         <h3 class="font-bold text-nova-navyDark text-base leading-snug">${toy.name}</h3>
                         <p class="text-xs text-slate-500 mt-1 flex items-start gap-1">
@@ -1149,7 +1125,7 @@
                             Aporte: ${toy.donationId}
                         </button>
                         ${toy.photoUrl ? `
-                            <a href="${escapeAttribute(toy.photoUrl)}" target="_blank" rel="noopener noreferrer" class="text-nova-cyanDark font-bold hover:underline inline-flex items-center gap-1">
+                            <a href="${toy.photoUrl}" target="_blank" rel="noopener noreferrer" class="text-nova-cyanDark font-bold hover:underline inline-flex items-center gap-1">
                                 Foto <i data-lucide="external-link" class="w-3 h-3"></i>
                             </a>
                         ` : `<span class="text-slate-400">${toy.status}</span>`}
@@ -1284,49 +1260,35 @@
         async function saveDonationToSheets() {
             if (!tempNewDonation) return;
 
-            if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL.includes('PEGA_AQUI')) {
-                showToast('Configura primero la URL de Google Apps Script.', 'amber');
-                return;
-            }
-
             const btn = document.getElementById('btn-save-donation');
-            if (!btn) return;
-
-            const originalHTML = btn.innerHTML;
-            btn.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> Guardando en Excel...`;
+            const originalText = btn.innerHTML;
+            btn.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> Guardando...`;
             btn.disabled = true;
             lucide.createIcons();
 
             try {
                 const response = await fetch(APPS_SCRIPT_URL, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                     body: JSON.stringify(tempNewDonation)
                 });
-
-                if (!response.ok) {
-                    throw new Error(`Error HTTP ${response.status}`);
-                }
-
+                
                 const result = await response.json();
 
-                if (result.status !== 'success') {
-                    throw new Error(result.message || 'El servidor no confirmó el registro.');
+                if (result.status === 'success') {
+                    temporaryDonations.unshift(tempNewDonation);
+                    donationsData.unshift(tempNewDonation);
+
+                    renderAllUI();
+                    closeDonationModal();
+                    quickSelect(tempNewDonation.id);
+                    showToast(`¡Listo! Tu donación fue registrada. Envía el comprobante al WhatsApp.`, 'emerald');
+                } else {
+                    throw new Error('Error al guardar');
                 }
-
-                temporaryDonations = temporaryDonations.filter(d => d.id !== tempNewDonation.id);
-                temporaryDonations.unshift(tempNewDonation);
-                donationsData = donationsData.filter(d => d.id !== tempNewDonation.id);
-                donationsData.unshift(tempNewDonation);
-
-                renderAllUI();
-                closeDonationModal();
-                quickSelect(tempNewDonation.id);
-                showToast('¡Donación guardada correctamente en el archivo conectado!', 'emerald');
             } catch (error) {
-                console.error('Error guardando la donación:', error);
-                showToast('No se pudo guardar. Verifica la conexión y el Apps Script.', 'amber');
-                btn.innerHTML = originalHTML;
+                console.error(error);
+                showToast('Error de conexión. Intenta de nuevo.', 'amber');
+                btn.innerHTML = originalText;
                 btn.disabled = false;
                 lucide.createIcons();
             }
